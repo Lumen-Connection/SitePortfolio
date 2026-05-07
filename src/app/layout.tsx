@@ -35,10 +35,9 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon.jpg", type: "image/jpeg" },
+      { url: "/LC - Logos/Lumen Connection Alternative orange logo.png", type: "image/png" },
     ],
-    apple: "/favicon.jpg",
+    apple: "/LC - Logos/Lumen Connection Alternative orange logo.png",
   },
   openGraph: {
     type: "website",

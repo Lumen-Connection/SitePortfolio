@@ -7,9 +7,13 @@ export function Footer() {
       <div className="container mx-auto px-5 sm:px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 sm:gap-10 md:gap-12">
           <div className="md:col-span-2">
-            <div className="flex items-center gap-2.5 mb-5">
-              <span aria-hidden="true" className="w-2 h-2 bg-white rotate-45" />
-              <span className="text-lg font-semibold tracking-tight">Lumen Connection</span>
+            <div className="flex items-center mb-5">
+              <img
+                src="/LC - Logos/Lumen Connection white logo.png"
+                alt="Lumen Connection"
+                className="h-9 sm:h-10 w-auto select-none"
+                draggable={false}
+              />
             </div>
             <p className="text-white/90 text-sm leading-relaxed max-w-sm">
               Estúdio digital que une engenharia de software e produção visual de alta fidelidade.

@@ -19,13 +19,17 @@ export function Header() {
           <motion.a
             href="#home"
             aria-label="Lumen Connection — ir para o início"
-            className="flex items-center gap-2 sm:gap-2.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
+            className="flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <span aria-hidden="true" className="w-2 h-2 bg-white rotate-45" />
-            <span className="text-base sm:text-lg font-semibold tracking-tight">Lumen Connection</span>
+            <img
+              src="/LC - Logos/Lumen Connection white logo.png"
+              alt="Lumen Connection"
+              className="h-6 sm:h-7 w-auto select-none"
+              draggable={false}
+            />
           </motion.a>
 
           <nav aria-label="Navegação principal" className="hidden md:flex items-center gap-9">
