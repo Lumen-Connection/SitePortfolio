@@ -3,9 +3,23 @@ import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
 import { navItems } from '@/app/portfolioData'
 import { CornerBrackets } from '@/components/ui/corner-brackets'
+import { LumenAIModal } from '@/components/LumenAIModal'
 
-export function Header() {
+export function Header({ activeColor = '#f97316' }: { activeColor?: string }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isLumenAIModalOpen, setIsLumenAIModalOpen] = useState(false)
+  const openLumenAIModal = () => {
+    setIsLumenAIModalOpen(true)
+    setIsMenuOpen(false)
+  }
+
+  const lumenStyle = {
+    color: activeColor,
+    borderColor: `${activeColor}66`,
+    backgroundColor: `${activeColor}0d`,
+    boxShadow: `0 0 24px -8px ${activeColor}66`,
+    transition: 'color 600ms ease, border-color 600ms ease, background-color 600ms ease, box-shadow 600ms ease',
+  } as const
 
   const { scrollY } = useScroll()
   const headerBackground = useTransform(scrollY, [0, 100], ['transparent', 'rgba(10, 10, 10, 0.95)'])
@@ -32,7 +46,7 @@ export function Header() {
             />
           </motion.a>
 
-          <nav aria-label="Navegação principal" className="hidden md:flex items-center gap-9">
+          <nav aria-label="Navegação principal" className="hidden md:flex items-center gap-7">
             {navItems.map((item, i) => (
               <motion.a
                 key={item.href}
@@ -45,6 +59,24 @@ export function Header() {
                 {item.label}
               </motion.a>
             ))}
+            <motion.button
+              type="button"
+              onClick={openLumenAIModal}
+              className="group relative inline-flex items-center px-3.5 py-1.5 text-xs font-semibold tracking-[0.15em] uppercase border focus-visible:outline-none focus-visible:ring-2"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 * navItems.length }}
+              whileHover={{
+                backgroundColor: `${activeColor}1a`,
+                borderColor: `${activeColor}b3`,
+              }}
+              whileTap={{ scale: 0.97 }}
+              aria-haspopup="dialog"
+              style={{ ...lumenStyle, ['--tw-ring-color' as string]: activeColor }}
+            >
+              <CornerBrackets color={`${activeColor}bf`} />
+              Lumen AI
+            </motion.button>
           </nav>
 
           <motion.a
@@ -91,6 +123,16 @@ export function Header() {
                   {item.label}
                 </a>
               ))}
+              <button
+                type="button"
+                onClick={openLumenAIModal}
+                className="relative inline-flex items-center justify-center mt-1 px-5 py-3 text-xs font-semibold tracking-[0.15em] uppercase border focus-visible:outline-none focus-visible:ring-2"
+                aria-haspopup="dialog"
+                style={{ ...lumenStyle, ['--tw-ring-color' as string]: activeColor }}
+              >
+                <CornerBrackets color={`${activeColor}bf`} />
+                Lumen AI
+              </button>
               <a
                 href="#contact"
                 className="relative mt-3 inline-flex items-center justify-center px-5 py-3 text-xs font-medium tracking-[0.15em] uppercase text-white/90 border border-white/15"
@@ -103,6 +145,8 @@ export function Header() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {isLumenAIModalOpen && <LumenAIModal onClose={() => setIsLumenAIModalOpen(false)} activeColor={activeColor} />}
     </motion.header>
   )
 }

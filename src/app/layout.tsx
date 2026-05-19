@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { PWAInstaller } from "@/components/PWAInstaller";
 import { heroProjects } from "./portfolioData";
 import { SITE } from "@/lib/site";
 import { CONTACT } from "@/lib/contact";
@@ -33,11 +34,25 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    title: SITE.name,
+    statusBarStyle: "black-translucent",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   icons: {
     icon: [
       { url: "/LC - Logos/Lumen Connection Alternative orange logo.png", type: "image/png" },
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
     ],
-    apple: "/LC - Logos/Lumen Connection Alternative orange logo.png",
+    apple: [
+      { url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    shortcut: "/icons/icon-192.png",
   },
   openGraph: {
     type: "website",
@@ -81,6 +96,7 @@ export const viewport: Viewport = {
   themeColor: SITE.themeColor,
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
 };
 
 const organizationLd = {
@@ -146,6 +162,12 @@ export default function RootLayout({
             fetchPriority="high"
           />
         )}
+        <link
+          rel="preload"
+          as="image"
+          href="/LC - Logos/Lumen Connection white fonte.webp"
+          fetchPriority="high"
+        />
         {otherHeroImages.map((src) => (
           <link key={src} rel="prefetch" as="image" href={src} />
         ))}
@@ -169,6 +191,7 @@ export default function RootLayout({
         </a>
         {children}
         <Toaster />
+        <PWAInstaller />
       </body>
     </html>
   );

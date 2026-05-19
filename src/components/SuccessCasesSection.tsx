@@ -8,6 +8,9 @@ import { X, Play, ExternalLink } from 'lucide-react'
 import { CornerBrackets, SectionLabel } from '@/components/ui/corner-brackets'
 import { hasMedia } from '@/lib/media'
 import { sanitizeUrl } from '@/lib/url'
+import { LumenAIModal } from '@/components/LumenAIModal'
+
+const isLumenAICase = (stat: typeof successCases[0]) => stat.nome === 'Lumen AI'
 
 const isYoutubeCaseStat = (stat: typeof successCases[0]) =>
   !!stat.url?.includes('youtube.com')
@@ -195,7 +198,7 @@ const StatCardInner = memo(function StatCardInner({ stat, index }: { stat: typeo
     return (
       <div className="relative z-10 flex flex-col items-center justify-center text-center flex-1 min-w-0 py-2">
         <span className="text-[10px] text-orange-300/80 font-medium tracking-[0.25em] uppercase mb-1.5">
-          Case {String(index + 1).padStart(2, '0')}
+          {stat.tagLabel ?? `Case ${String(index + 1).padStart(2, '0')}`}
         </span>
         <p className="text-sm md:text-base font-semibold text-white mb-1">
           {stat.nome}
@@ -220,7 +223,7 @@ const StatCardInner = memo(function StatCardInner({ stat, index }: { stat: typeo
       </div>
       <div className="relative z-10 flex flex-col justify-center flex-1 min-w-0">
         <span className="text-[10px] text-orange-300/80 font-medium tracking-[0.25em] uppercase mb-1.5">
-          Case {String(index + 1).padStart(2, '0')}
+          {stat.tagLabel ?? `Case ${String(index + 1).padStart(2, '0')}`}
         </span>
         <p className="text-sm md:text-base font-semibold text-white mb-1 truncate">
           {stat.nome}
@@ -237,12 +240,16 @@ const StatCard = memo(function StatCard({
   stat,
   index,
   onOpenModal,
+  onOpenLumenAI,
 }: {
   stat: typeof successCases[0]
   index: number
   onOpenModal: (stat: typeof successCases[0]) => void
+  onOpenLumenAI: () => void
 }) {
-  if (stat.url) {
+  const isLumenAI = isLumenAICase(stat)
+
+  if (stat.url || isLumenAI) {
     return (
       <motion.div
         initial={{ opacity: 0, x: 24 }}
@@ -253,8 +260,9 @@ const StatCard = memo(function StatCard({
       >
         <button
           type="button"
-          onClick={() => onOpenModal(stat)}
+          onClick={() => (isLumenAI ? onOpenLumenAI() : onOpenModal(stat))}
           className="relative flex flex-row items-center gap-4 flex-1 cursor-pointer text-left bg-transparent border-0 p-0 w-full"
+          aria-haspopup={isLumenAI ? 'dialog' : undefined}
         >
           <StatCardInner stat={stat} index={index} />
         </button>
@@ -271,8 +279,11 @@ const StatCard = memo(function StatCard({
 
 export function SuccessCasesSection() {
   const [modalCase, setModalCase] = useState<typeof successCases[0] | null>(null)
+  const [isLumenAIOpen, setIsLumenAIOpen] = useState(false)
   const handleOpenModal = useCallback((stat: typeof successCases[0]) => setModalCase(stat), [])
   const handleCloseModal = useCallback(() => setModalCase(null), [])
+  const handleOpenLumenAI = useCallback(() => setIsLumenAIOpen(true), [])
+  const handleCloseLumenAI = useCallback(() => setIsLumenAIOpen(false), [])
 
   return (
     <section id="success-cases" aria-labelledby="success-cases-heading" className="relative lg:min-h-screen flex flex-col py-10 sm:py-12 md:py-16">
@@ -328,7 +339,13 @@ export function SuccessCasesSection() {
 
             <div className="lg:col-span-5 flex flex-col gap-4 h-full">
               {successCases.map((stat, index) => (
-                <StatCard key={`${stat.nome}-${index}`} stat={stat} index={index} onOpenModal={handleOpenModal} />
+                <StatCard
+                  key={`${stat.nome}-${index}`}
+                  stat={stat}
+                  index={index}
+                  onOpenModal={handleOpenModal}
+                  onOpenLumenAI={handleOpenLumenAI}
+                />
               ))}
             </div>
           </div>
@@ -337,6 +354,10 @@ export function SuccessCasesSection() {
 
       {modalCase && (
         <CaseModal stat={modalCase} onClose={handleCloseModal} />
+      )}
+
+      {isLumenAIOpen && (
+        <LumenAIModal onClose={handleCloseLumenAI} activeColor="#f97316" />
       )}
     </section>
   )

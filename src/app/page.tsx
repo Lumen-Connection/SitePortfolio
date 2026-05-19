@@ -40,7 +40,7 @@ export default function Portfolio() {
 
   return (
     <>
-    <Header />
+    <Header activeColor={activeColor} />
     <div id="a11y-content" className="min-h-screen bg-black text-white overflow-x-hidden">
       <main id="main-content" tabIndex={-1}>
         <HeroSection onVerProjeto={handleVerProjeto} onSlideChange={handleSlideChange} />

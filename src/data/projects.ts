@@ -19,7 +19,7 @@ export const projects: Project[] = [
     subtitle: 'Engenharia de Software · Produção Digital de Alta Fidelidade',
     stats: '',
     color: '#e8c84a',
-    gradient: 'from-yellow-900/50 to-stone-950/80',
+    gradient: 'from-yellow-400/40 to-transparent',
     icon: Zap,
     image: '/images/hero/lumen-bg.webp',
     bannerImage: '/images/hero/lumen-bg.webp',
@@ -36,9 +36,9 @@ export const projects: Project[] = [
     description: 'Trabalhamos com linguagens e frameworks como JavaScript, React, Python, Java, C#, Next.js, Tailwind, HTML, CSS, e muito mais',
     stats: 'Projetos concluídos',
     color: '#f97316',
-    gradient: 'from-orange-500/20 to-amber-500/20',
+    gradient: 'from-orange-500/40 to-transparent',
     icon: Code2,
-    image: '/images/stock/nitish-meena.webp',
+    image: '/images/stock/programming-background-with-person-working-with-codes-computer-scaled-1.webp',
     bannerImage: '/images/covers/web-development.jpeg',
     items: [
       {
@@ -72,9 +72,9 @@ export const projects: Project[] = [
     description: 'Desenvolvimento nativo com Rust, C++, WinUI e Razor',
     stats: 'Projetos concluídos',
     color: '#eab308',
-    gradient: 'from-yellow-500/20 to-amber-400/20',
+    gradient: 'from-yellow-500/40 to-transparent',
     icon: Code2,
-    image: '/images/stock/joe-mcdaniel.webp',
+    image: '/images/stock/photo-1484417894907-623942c8ee29.webp',
     bannerImage: '/images/covers/software-development.jpeg',
     items: [
       {
@@ -102,9 +102,9 @@ export const projects: Project[] = [
     description: 'Criação rápida usando frameworks como Flutter, React Native e Kotlin',
     stats: 'Projetos concluídos',
     color: '#22c55e',
-    gradient: 'from-green-500/20 to-emerald-500/20',
+    gradient: 'from-green-500/40 to-transparent',
     icon: Smartphone,
-    image: '/images/stock/jonatan-pie.webp',
+    image: '/images/stock/02-desenvolvimento-mobile.webp',
     bannerImage: '/images/covers/mobile-development.jpeg',
     items: [
       {
@@ -122,9 +122,9 @@ export const projects: Project[] = [
     description: 'Edição profissional de vídeos com Adobe Premiere Pro, After Effects e Blender — incluindo conteúdo para YouTube, reels, stories e outras mídias sociais',
     stats: 'Projetos concluídos',
     color: '#3b82f6',
-    gradient: 'from-blue-500/20 to-cyan-500/20',
+    gradient: 'from-blue-500/40 to-transparent',
     icon: Video,
-    image: '/images/stock/alex-fxr.webp',
+    image: '/images/stock/photo-1614963326505-843868e1d83a.webp',
     bannerImage: '/images/covers/video-editor.jpeg',
     items: [
       {
@@ -152,9 +152,9 @@ export const projects: Project[] = [
     description: 'Design de logos, banners, cartões de visitas e outros materiais gráficos para empresas e indivíduos',
     stats: 'Projetos concluídos',
     color: '#a855f7',
-    gradient: 'from-purple-500/20 to-violet-500/20',
+    gradient: 'from-purple-500/40 to-transparent',
     icon: Heart,
-    image: '/images/stock/vincentiu-solomon.webp',
+    image: '/images/stock/photo-1506097425191-7ad538b29cef.webp',
     bannerImage: '/images/covers/design.jpeg',
     items: [
       {
@@ -173,7 +173,7 @@ export const projects: Project[] = [
     description: 'Criação de posters artísticos e ilustrações digitais com identidade visual marcante',
     stats: 'Projetos concluídos',
     color: '#f43f5e',
-    gradient: 'from-rose-500/20 to-pink-500/20',
+    gradient: 'from-rose-500/40 to-transparent',
     icon: Palette,
     image: '/',
     bannerImage: '/images/covers/posters.jpeg',
@@ -212,9 +212,9 @@ export const projects: Project[] = [
     description: 'Modelagem, texturização e renderização 3D com Blender, incluindo personagens, cenários e objetos',
     stats: 'Projetos concluídos',
     color: '#06b6d4',
-    gradient: 'from-cyan-500/20 to-sky-500/20',
+    gradient: 'from-cyan-500/40 to-transparent',
     icon: Box,
-    image: '/images/stock/antoine-rault.webp',
+    image: '/images/stock/pexels-cottonbro-7504746-1170x700.webp',
     bannerImage: '/images/covers/blender-3d.jpeg',
     showInHero: true,
     items: [
@@ -240,9 +240,9 @@ export const projects: Project[] = [
     description: 'Criação de efeitos visuais com After Effects, Blender e outras ferramentas profissionais de VFX',
     stats: 'Projetos concluídos',
     color: '#f59e0b',
-    gradient: 'from-amber-500/20 to-yellow-400/20',
+    gradient: 'from-amber-500/40 to-transparent',
     icon: Sparkles,
-    image: '/images/stock/marek-piwnicki.webp',
+    image: '/images/stock/video_editing-1-scaled.webp',
     bannerImage: '/images/covers/vfx.jpeg',
     showInHero: true,
     items: [

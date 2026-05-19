@@ -40,6 +40,7 @@ export type SuccessCase = {
   descrição: string
   descriçãoLonga?: string
   url?: string
+  tagLabel?: string
 }
 
 export type NavItem = {

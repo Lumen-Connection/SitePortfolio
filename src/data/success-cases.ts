@@ -22,8 +22,10 @@ export const successCases: SuccessCase[] = [
     url: 'https://maridicas.com.br/',
   },
   {
-    imagem: '/',
-    nome: 'Em Breve',
-    descrição: 'Em Breve',
+    imagem: '/LC - Logos/Lumen Connection Alternative white logo.png',
+    nome: 'Lumen AI',
+    descrição: 'IA local integrada ao WhatsApp para agendamentos automáticos com privacidade total dos dados',
+    descriçãoLonga: 'O Lumen AI é uma solução para empresas que desejam oferecer atendimento mais eficiente, natural e inteligente no WhatsApp. O sistema integra uma inteligência artificial local (ou hospedada em servidor próprio) diretamente no WhatsApp, permitindo que o bot compreenda o cliente de forma conversacional e realize agendamentos organicamente. Com privacidade total — todas as conversas processadas dentro da infraestrutura da empresa — o assistente funciona 24/7, é ideal para salões, clínicas, consultórios, academias e qualquer negócio que precise transformar conversas em horários marcados.',
+    tagLabel: 'Conheça Lumen AI',
   },
 ]

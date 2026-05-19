@@ -44,7 +44,7 @@ function HeroSlide({ project, isActive, onVerProjeto }: { project: typeof projec
       <div
         className="absolute inset-0 z-[1] pointer-events-none"
         style={{
-          background: `radial-gradient(ellipse 55% 45% at 25% 60%, ${project.color}18 0%, transparent 70%)`,
+          background: `radial-gradient(ellipse 55% 45% at 25% 60%, ${project.color}55 0%, ${project.color}1a 40%, transparent 75%)`,
         }}
       />
 
@@ -75,12 +75,14 @@ function HeroSlide({ project, isActive, onVerProjeto }: { project: typeof projec
               >
                 <span className="sr-only">{project.title}</span>
                 <img
-                  src="/LC - Logos/Lumen Connection white fonte.png"
+                  src="/LC - Logos/Lumen Connection white fonte.webp"
                   alt={project.title}
                   aria-hidden="true"
+                  width={2573}
+                  height={320}
                   className="h-10 sm:h-12 md:h-16 lg:h-20 w-auto max-w-full"
                   style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.5))' }}
-                  decoding={isActive ? 'sync' : 'async'}
+                  decoding="async"
                   fetchPriority={isActive ? 'high' : 'low'}
                   loading="eager"
                 />
