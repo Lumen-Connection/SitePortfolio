@@ -79,10 +79,11 @@ export const projects: Project[] = [
     items: [
       {
         id: 1,
-        title: 'Vinil Player',
-        description: 'O Reprodutor da Música Desktop Open Source desenvolvido em C++ com Qt 6, com player de áudio em formato Opus',
-        url: 'https://github.com/LFNG15/vinil-player',
-        image: '/images/projects/software/vinil-player.jpeg',
+        title: 'Lumen Player',
+        description: 'Reprodutor de áudio desktop leve e elegante para Windows, desenvolvido em C++17 com Qt 6. Biblioteca local com playlists e capas, fila estilo Spotify, sistema de curtidas, edição de metadados, 6 temas personalizáveis e persistência em SQLite — tudo offline e sem cadastro',
+        url: 'https://github.com/LFNG15/lumen-player',
+        downloadUrl: 'https://github.com/LFNG15/lumen-player/releases/download/v1.0.0/LumenPlayer-v1.0.0-setup.exe',
+        image: '/images/projects/software/LumenPlayer.png',
         subcategory: 'C++',
       },
       {
@@ -90,6 +91,7 @@ export const projects: Project[] = [
         title: 'Lumen Chat',
         description: 'Cliente de chat desktop leve e nativo do Windows desenvolvido em Rust, que se conecta ao OpenRouter para acesso a múltiplos modelos de linguagem através de uma interface única e limpa, com armazenamento seguro de chaves de API via Windows Credential Manager (DPAPI)',
         url: 'https://github.com/Decade-GitHub/lumenchat',
+        downloadUrl: 'https://github.com/Decade-GitHub/lumenchat/releases/download/v0.5/Lumen.Chat.7z',
         image: '/images/projects/software/LumenChat.png',
         subcategory: 'Rust',
       },

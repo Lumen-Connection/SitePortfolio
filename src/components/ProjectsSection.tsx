@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect, useCallback, memo } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence, useScroll, useTransform, useMotionTemplate } from 'framer-motion'
-import { ArrowRight, ArrowLeft, ExternalLink } from 'lucide-react'
+import { ArrowRight, ArrowLeft, ExternalLink, Download, Code2 } from 'lucide-react'
 import { categories, sectionProjects as projects, ProjectItem } from '@/app/portfolioData'
 import { CornerBrackets, SectionLabel } from '@/components/ui/corner-brackets'
 import { hasMedia, isVideoSource } from '@/lib/media'
@@ -120,15 +120,44 @@ const ItemCard = memo(function ItemCard({ item, index }: { item: ProjectItem; in
       <div className={`relative z-10 h-full flex flex-col p-5 ${itemHasMedia ? 'justify-end' : 'justify-center items-center text-center'}`}>
         <h4 className="text-white font-semibold mb-1.5 leading-tight tracking-tight">{item.title}</h4>
         <p className="text-white/60 text-xs line-clamp-2 mb-3 leading-relaxed">{item.description}</p>
-        {item.url && (
-          <a
-            href={sanitizeUrl(item.url)}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 text-[10px] font-medium tracking-[0.2em] uppercase text-orange-400 hover:text-orange-300 transition-colors"
-          >
-            Ver projeto <ExternalLink aria-hidden="true" className="w-3 h-3" />
-          </a>
+        {item.downloadUrl ? (
+          <div className="flex flex-wrap items-center gap-2">
+            <a
+              href={sanitizeUrl(item.downloadUrl)}
+              target="_blank"
+              rel="noopener noreferrer"
+              download
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-500 hover:bg-orange-400 text-black text-[10px] font-semibold tracking-[0.18em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
+              aria-label={`Baixar ${item.title}`}
+            >
+              <Download aria-hidden="true" className="w-3.5 h-3.5" />
+              Download
+            </a>
+            {item.url && (
+              <a
+                href={sanitizeUrl(item.url)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative inline-flex items-center gap-1.5 px-3 py-1.5 border border-white/15 text-white/85 hover:text-white hover:border-white/35 text-[10px] font-medium tracking-[0.18em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
+                aria-label={`Acessar código aberto de ${item.title}`}
+              >
+                <CornerBrackets />
+                <Code2 aria-hidden="true" className="w-3.5 h-3.5" />
+                Código Aberto
+              </a>
+            )}
+          </div>
+        ) : (
+          item.url && (
+            <a
+              href={sanitizeUrl(item.url)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-[10px] font-medium tracking-[0.2em] uppercase text-orange-400 hover:text-orange-300 transition-colors"
+            >
+              Ver projeto <ExternalLink aria-hidden="true" className="w-3 h-3" />
+            </a>
+          )
         )}
       </div>
     </motion.div>

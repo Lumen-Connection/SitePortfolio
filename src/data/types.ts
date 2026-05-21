@@ -6,6 +6,7 @@ export type ProjectItem = {
   description: string
   image: string
   url?: string
+  downloadUrl?: string
   subcategory?: string
 }
 
