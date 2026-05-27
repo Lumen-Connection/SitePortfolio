@@ -1,7 +1,7 @@
 export const CONTACT = {
   phoneE164: '5583999614629',
   phoneDisplay: '(83) 99961-4629',
-  email: 'contato.lumenconnection@gmail.com',
+  email: 'contato@lumenconnection.com',
   location: 'João Pessoa, PB',
 } as const
 
