@@ -89,10 +89,10 @@ export const projects: Project[] = [
       {
         id: 2,
         title: 'Lumen Chat',
-        description: 'Cliente de chat desktop leve e nativo do Windows desenvolvido em Rust, que se conecta ao OpenRouter para acesso a múltiplos modelos de linguagem através de uma interface única e limpa, com armazenamento seguro de chaves de API via Windows Credential Manager (DPAPI)',
+        description: 'Cliente de chat com IA leve e nativo para Windows desenvolvido em Rust, se conecta ao OpenRouter para acesso a inúmeros modelos de linguagem através de uma interface única e limpa, com armazenamento seguro de chaves de API via Windows Credential Manager',
         url: 'https://github.com/Decade-GitHub/lumenchat',
-        downloadUrl: 'https://github.com/Decade-GitHub/lumenchat/releases/download/v0.5/Lumen.Chat.7z',
-        image: '/images/projects/software/LumenChat.png',
+        downloadUrl: 'https://github.com/Decade-GitHub/lumenchat/releases/download/latest/Lumen.Chat.7z',
+        image: '/images/projects/software/LumenChat-Banner.png',
         subcategory: 'Rust',
       },
     ],
