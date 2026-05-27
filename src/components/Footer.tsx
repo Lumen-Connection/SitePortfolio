@@ -51,7 +51,7 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-10 sm:mt-12 md:mt-14 pt-6 sm:pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-          <p className="text-white/90 text-xs tracking-wider">© 2026 Lumen Connection. Todos os direitos reservados.</p>
+          <p className="text-white/90 text-xs tracking-wider">🄯 2026 Lumen Connection</p>
           <a
             href="#contact"
             className="relative inline-flex items-center px-4 py-2 text-[10px] font-medium tracking-[0.25em] uppercase text-white/70 border border-white/10 hover:border-white/30 hover:text-white transition-colors"
