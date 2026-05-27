@@ -82,7 +82,7 @@ export const projects: Project[] = [
         title: 'Lumen Player',
         description: 'Reprodutor de áudio desktop leve e elegante para Windows, desenvolvido em C++17 com Qt 6. Biblioteca local com playlists e capas, fila estilo Spotify, sistema de curtidas, edição de metadados, 6 temas personalizáveis e persistência em SQLite — tudo offline e sem cadastro',
         url: 'https://github.com/LFNG15/lumen-player',
-        downloadUrl: 'https://github.com/LFNG15/lumen-player/releases/download/v1.0.0/LumenPlayer-v1.0.0-setup.exe',
+        downloadUrl: 'https://github.com/LFNG15/lumen-player/releases/download/v1.1.1/LumenPlayer-v1.1.1-setup.exe',
         image: '/images/projects/software/LumenPlayer.png',
         subcategory: 'C++',
       },
