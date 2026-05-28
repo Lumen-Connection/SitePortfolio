@@ -9,7 +9,7 @@ import { sanitizeUrl } from '@/lib/url'
 import { useTranslation } from '@/lib/i18n/LocaleContext'
 import { tField } from '@/lib/i18n/tField'
 
-function HeroSlide({ project, isActive, onVerProjeto }: { project: typeof projects[0]; isActive: boolean; onVerProjeto: () => void }) {
+function HeroSlide({ project, isActive, onVerProjeto, skipEntryAnimation = false }: { project: typeof projects[0]; isActive: boolean; onVerProjeto: () => void; skipEntryAnimation?: boolean }) {
   const { t, locale } = useTranslation()
   const title = tField(project, 'title', locale)
   const category = tField(project, 'category', locale)
@@ -52,9 +52,9 @@ function HeroSlide({ project, isActive, onVerProjeto }: { project: typeof projec
         <div className="container mx-auto px-5 sm:px-6 lg:px-12">
           <div className="max-w-4xl">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={skipEntryAnimation ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 20 }}
-              transition={{ duration: 0.6, delay: 0.15 }}
+              transition={{ duration: 0.6, delay: skipEntryAnimation ? 0 : 0.15 }}
               className="mb-6 flex items-center gap-3"
             >
               <span className="h-px w-10" style={{ backgroundColor: project.color }} />
@@ -69,17 +69,17 @@ function HeroSlide({ project, isActive, onVerProjeto }: { project: typeof projec
             {project.title === 'Lumen Connection' ? (
               <motion.h1
                 className="mb-4 sm:mb-5"
-                initial={{ opacity: 0, y: 30 }}
+                initial={skipEntryAnimation ? false : { opacity: 0, y: 30 }}
                 animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 30 }}
-                transition={{ duration: 0.6, delay: 0.25 }}
+                transition={{ duration: 0.6, delay: skipEntryAnimation ? 0 : 0.25 }}
               >
                 <span className="sr-only">{title}</span>
                 <img
                   src="/LC - Logos/Lumen Connection white fonte.webp"
                   alt={title}
                   aria-hidden="true"
-                  width={2573}
-                  height={320}
+                  width={1280}
+                  height={159}
                   className="h-10 sm:h-12 md:h-16 lg:h-20 w-auto max-w-full"
                   style={{ filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.5))' }}
                   decoding="async"
@@ -91,9 +91,9 @@ function HeroSlide({ project, isActive, onVerProjeto }: { project: typeof projec
               <motion.h1
                 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-5 leading-[1.05] tracking-tight text-white"
                 style={{ textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}
-                initial={{ opacity: 0, y: 30 }}
+                initial={skipEntryAnimation ? false : { opacity: 0, y: 30 }}
                 animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 30 }}
-                transition={{ duration: 0.6, delay: 0.25 }}
+                transition={{ duration: 0.6, delay: skipEntryAnimation ? 0 : 0.25 }}
               >
                 {title}
               </motion.h1>
@@ -102,9 +102,9 @@ function HeroSlide({ project, isActive, onVerProjeto }: { project: typeof projec
             {subtitle && (
               <motion.p
                 className="text-xs md:text-sm font-medium tracking-[0.3em] uppercase mb-6 text-yellow-300"
-                initial={{ opacity: 0, y: 15 }}
+                initial={skipEntryAnimation ? false : { opacity: 0, y: 15 }}
                 animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 15 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
+                transition={{ duration: 0.6, delay: skipEntryAnimation ? 0 : 0.3 }}
               >
                 {subtitle}
               </motion.p>
@@ -113,18 +113,18 @@ function HeroSlide({ project, isActive, onVerProjeto }: { project: typeof projec
             <motion.p
               className="text-sm sm:text-base md:text-lg text-white/90 mb-7 sm:mb-10 max-w-xl leading-relaxed"
               style={{ textShadow: '0 1px 3px rgba(0,0,0,0.6)' }}
-              initial={{ opacity: 0, y: 30 }}
+              initial={skipEntryAnimation ? false : { opacity: 0, y: 30 }}
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 30 }}
-              transition={{ duration: 0.6, delay: 0.35 }}
+              transition={{ duration: 0.6, delay: skipEntryAnimation ? 0 : 0.35 }}
             >
               {description}
             </motion.p>
 
             <motion.div
               className="flex flex-wrap items-center gap-3"
-              initial={{ opacity: 0, y: 30 }}
+              initial={skipEntryAnimation ? false : { opacity: 0, y: 30 }}
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 30 }}
-              transition={{ duration: 0.6, delay: 0.45 }}
+              transition={{ duration: 0.6, delay: skipEntryAnimation ? 0 : 0.45 }}
             >
               <motion.a
                 href={ctaHref}
@@ -171,7 +171,13 @@ export function HeroSection({
   const [mounted, setMounted] = useState(false)
   const [a11yMode, setA11yMode] = useState(false)
   const [isLumenAIOpen, setIsLumenAIOpen] = useState(false)
+  const [hasInteracted, setHasInteracted] = useState(false)
   useEffect(() => { setMounted(true) }, [])
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const raf = window.requestAnimationFrame(() => setHasInteracted(true))
+    return () => window.cancelAnimationFrame(raf)
+  }, [])
   useEffect(() => {
     if (typeof document === 'undefined') return
     const html = document.documentElement
@@ -258,7 +264,7 @@ export function HeroSection({
       >
         <AnimatePresence mode="wait">
           {projects.map((project, index) => currentSlide === index && (
-            <HeroSlide key={project.id} project={project} isActive={currentSlide === index} onVerProjeto={() => onVerProjeto(project.category)} />
+            <HeroSlide key={project.id} project={project} isActive={currentSlide === index} onVerProjeto={() => onVerProjeto(project.category)} skipEntryAnimation={!hasInteracted} />
           ))}
         </AnimatePresence>
       </div>

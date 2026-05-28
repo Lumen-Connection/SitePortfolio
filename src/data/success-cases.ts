@@ -2,7 +2,7 @@ import type { SuccessCase } from './types'
 
 export const successCases: SuccessCase[] = [
   {
-    imagem: '/success-cases/queridas-compras.png',
+    imagem: '/success-cases/queridas-compras.webp',
     nome: 'Queridas Compras',
     descrição: 'Um site de vitrine online para diversas lojas regionais de João Pessoa, PB',
     descrição_en: 'Online showcase site connecting regional shops in João Pessoa, PB',
@@ -13,7 +13,7 @@ export const successCases: SuccessCase[] = [
     url: 'https://queridascompras.com.br/',
   },
   {
-    imagem: '/success-cases/video-edicao.jpeg',
+    imagem: '/success-cases/video-edicao.webp',
     nome: 'Edição do vídeo no canal do Youtube "Universo Nerdístico Studios"',
     nome_en: 'Video edit for the "Universo Nerdístico Studios" YouTube channel',
     descrição:

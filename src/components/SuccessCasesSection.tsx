@@ -313,7 +313,7 @@ export function SuccessCasesSection() {
               <CornerBrackets color="rgba(255,255,255,0.6)" size={14} inset={-6} />
               <div className="relative w-full h-56 md:h-64 shrink-0 overflow-hidden">
                 <img
-                  src="/success-cases/banner-code-edit.jpeg"
+                  src="/success-cases/banner-code-edit.webp"
                   alt={t('successCases.bannerAlt')}
                   loading="lazy"
                   decoding="async"

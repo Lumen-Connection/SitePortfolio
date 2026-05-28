@@ -54,10 +54,14 @@ export function Header({ activeColor = '#f97316' }: { activeColor?: string }) {
             transition={{ duration: 0.5 }}
           >
             <img
-              src="/LC - Logos/Lumen Connection white logo.png"
+              src="/LC - Logos/Lumen Connection white logo.webp"
               alt="Lumen Connection"
+              width={480}
+              height={50}
               className="h-5 sm:h-6 md:h-7 w-auto select-none"
               draggable={false}
+              decoding="async"
+              fetchPriority="high"
             />
           </motion.a>
 
