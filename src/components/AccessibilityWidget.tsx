@@ -15,6 +15,8 @@ import {
   Contrast,
   Volume2,
 } from 'lucide-react'
+import { useTranslation } from '@/lib/i18n/LocaleContext'
+import type { TranslationKey } from '@/lib/i18n/translations'
 
 type Daltonism = 'none' | 'protanopia' | 'deuteranopia' | 'tritanopia' | 'achromatopsia'
 type ContrastTheme = 'none' | 'aquatic' | 'desert' | 'dusk' | 'nightsky'
@@ -39,12 +41,17 @@ const DEFAULTS: Prefs = {
   screenReader: false,
 }
 
-const CONTRAST_THEMES: { id: ContrastTheme; label: string; description: string; swatches: [string, string, string] }[] = [
-  { id: 'none', label: 'Nenhum', description: 'Tema padrão do site', swatches: ['#0a0a0a', '#f5f5f5', '#f97316'] },
-  { id: 'aquatic', label: 'Aquáticos', description: 'Fundo preto, acentos ciano', swatches: ['#000000', '#ffffff', '#00b7ff'] },
-  { id: 'desert', label: 'Deserto', description: 'Fundo creme, texto escuro', swatches: ['#fffaef', '#3b3b3b', '#00006e'] },
-  { id: 'dusk', label: 'Entardecer', description: 'Fundo grafite, acentos âmbar', swatches: ['#2d3236', '#ffffff', '#ffaa44'] },
-  { id: 'nightsky', label: 'Céu noturno', description: 'Fundo preto, acentos lavanda', swatches: ['#000000', '#ffffff', '#b5a8ff'] },
+const CONTRAST_THEMES: {
+  id: ContrastTheme
+  labelKey: TranslationKey
+  descriptionKey: TranslationKey
+  swatches: [string, string, string]
+}[] = [
+  { id: 'none', labelKey: 'a11y.theme.none.label', descriptionKey: 'a11y.theme.none.description', swatches: ['#0a0a0a', '#f5f5f5', '#f97316'] },
+  { id: 'aquatic', labelKey: 'a11y.theme.aquatic.label', descriptionKey: 'a11y.theme.aquatic.description', swatches: ['#000000', '#ffffff', '#00b7ff'] },
+  { id: 'desert', labelKey: 'a11y.theme.desert.label', descriptionKey: 'a11y.theme.desert.description', swatches: ['#fffaef', '#3b3b3b', '#00006e'] },
+  { id: 'dusk', labelKey: 'a11y.theme.dusk.label', descriptionKey: 'a11y.theme.dusk.description', swatches: ['#2d3236', '#ffffff', '#ffaa44'] },
+  { id: 'nightsky', labelKey: 'a11y.theme.nightsky.label', descriptionKey: 'a11y.theme.nightsky.description', swatches: ['#000000', '#ffffff', '#b5a8ff'] },
 ]
 
 const STORAGE_KEY = 'lumen-a11y-prefs'
@@ -136,6 +143,7 @@ function ensureVLibras(enabled: boolean) {
 }
 
 export function AccessibilityWidget() {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
   const [prefs, setPrefs] = useState<Prefs>(DEFAULTS)
   const [hydrated, setHydrated] = useState(false)
@@ -191,7 +199,7 @@ export function AccessibilityWidget() {
           type="button"
           data-a11y-filter="true"
           onClick={() => setOpen((v) => !v)}
-          aria-label={open ? 'Fechar menu de acessibilidade' : 'Abrir menu de acessibilidade'}
+          aria-label={open ? t('a11y.closeMenu') : t('a11y.openMenu')}
           aria-expanded={open}
           aria-controls="a11y-panel"
           className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-orange-500 hover:bg-orange-400 text-white shadow-lg shadow-black/50 ring-2 ring-white/20 flex items-center justify-center transition-all hover:scale-105 active:scale-95 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-orange-300/60"
@@ -217,7 +225,7 @@ export function AccessibilityWidget() {
               id="a11y-panel"
               ref={panelRef}
               role="dialog"
-              aria-label="Recursos de acessibilidade"
+              aria-label={t('a11y.panelLabel')}
               aria-modal="true"
               className="
                 fixed z-[70] bg-[#0f0f0f] text-white shadow-2xl shadow-black/60
@@ -235,12 +243,12 @@ export function AccessibilityWidget() {
             <header className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-white/[0.02]">
               <div className="flex items-center gap-2">
                 <Accessibility aria-hidden="true" className="w-4 h-4 text-orange-400" />
-                <h2 className="text-sm font-semibold tracking-wide uppercase">Acessibilidade</h2>
+                <h2 className="text-sm font-semibold tracking-wide uppercase">{t('a11y.title')}</h2>
               </div>
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                aria-label="Fechar"
+                aria-label={t('a11y.close')}
                 className="p-1.5 rounded hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
               >
                 <X aria-hidden="true" className="w-4 h-4" />
@@ -248,12 +256,12 @@ export function AccessibilityWidget() {
             </header>
 
             <div className="p-4 space-y-5">
-              <Group title="Tamanho do texto">
+              <Group title={t('a11y.group.textSize')}>
                 <div className="flex items-center gap-2">
                   <IconButton
                     onClick={decZoom}
                     disabled={prefs.zoom <= ZOOM_MIN + 0.001}
-                    aria-label="Diminuir tamanho do texto"
+                    aria-label={t('a11y.decreaseText')}
                   >
                     <Minus aria-hidden="true" className="w-4 h-4" />
                   </IconButton>
@@ -263,15 +271,15 @@ export function AccessibilityWidget() {
                   <IconButton
                     onClick={incZoom}
                     disabled={prefs.zoom >= ZOOM_MAX - 0.001}
-                    aria-label="Aumentar tamanho do texto"
+                    aria-label={t('a11y.increaseText')}
                   >
                     <Plus aria-hidden="true" className="w-4 h-4" />
                   </IconButton>
                 </div>
               </Group>
 
-              <Group title="Temas de contraste">
-                <div role="radiogroup" aria-label="Selecionar tema de contraste" className="grid grid-cols-1 gap-1.5">
+              <Group title={t('a11y.group.contrast')}>
+                <div role="radiogroup" aria-label={t('a11y.contrastSelectLabel')} className="grid grid-cols-1 gap-1.5">
                   {CONTRAST_THEMES.map((theme) => {
                     const active = prefs.contrastTheme === theme.id
                     return (
@@ -293,8 +301,8 @@ export function AccessibilityWidget() {
                           ))}
                         </span>
                         <span className="flex-1 min-w-0">
-                          <span className="block text-xs font-semibold text-white leading-tight">{theme.label}</span>
-                          <span className="block text-[10px] text-white/60 leading-tight mt-0.5">{theme.description}</span>
+                          <span className="block text-xs font-semibold text-white leading-tight">{t(theme.labelKey)}</span>
+                          <span className="block text-[10px] text-white/60 leading-tight mt-0.5">{t(theme.descriptionKey)}</span>
                         </span>
                         <Contrast aria-hidden="true" className={`w-3.5 h-3.5 shrink-0 ${active ? 'text-orange-400' : 'text-white/40'}`} />
                       </button>
@@ -303,44 +311,44 @@ export function AccessibilityWidget() {
                 </div>
               </Group>
 
-              <Group title="Visão">
+              <Group title={t('a11y.group.vision')}>
                 <ToggleRow
                   icon={<LinkIcon aria-hidden="true" className="w-4 h-4" />}
-                  label="Sublinhar links"
+                  label={t('a11y.underlineLinks')}
                   active={prefs.underlineLinks}
                   onChange={(v) => update('underlineLinks', v)}
                 />
                 <ToggleRow
                   icon={<Pause aria-hidden="true" className="w-4 h-4" />}
-                  label="Pausar animações"
+                  label={t('a11y.pauseAnimations')}
                   active={prefs.pauseAnimations}
                   onChange={(v) => update('pauseAnimations', v)}
                 />
               </Group>
 
-              <Group title="Leitor de tela">
+              <Group title={t('a11y.group.screenReader')}>
                 <ToggleRow
                   icon={<Volume2 aria-hidden="true" className="w-4 h-4" />}
-                  label="Modo leitor de tela"
+                  label={t('a11y.screenReaderMode')}
                   active={prefs.screenReader}
                   onChange={(v) => update('screenReader', v)}
                 />
                 {prefs.screenReader && (
                   <p className="text-[11px] text-white/70 leading-relaxed">
-                    Reforça foco visível, pausa animações, sublinha links, desativa autoplay do carrossel e amplia anúncios para leitores de tela (NVDA, JAWS, VoiceOver, TalkBack).
+                    {t('a11y.screenReaderHint')}
                   </p>
                 )}
               </Group>
 
-              <Group title="Daltonismo">
-                <div role="radiogroup" aria-label="Filtro de daltonismo" className="grid grid-cols-1 gap-1.5">
+              <Group title={t('a11y.group.colorBlind')}>
+                <div role="radiogroup" aria-label={t('a11y.colorBlindFilterLabel')} className="grid grid-cols-1 gap-1.5">
                   {([
-                    { id: 'none', label: 'Nenhum' },
-                    { id: 'protanopia', label: 'Protanopia (vermelho)' },
-                    { id: 'deuteranopia', label: 'Deuteranopia (verde)' },
-                    { id: 'tritanopia', label: 'Tritanopia (azul)' },
-                    { id: 'achromatopsia', label: 'Achromatopsia (tons de cinza)' },
-                  ] as { id: Daltonism; label: string }[]).map((opt) => {
+                    { id: 'none', labelKey: 'a11y.colorBlind.none' },
+                    { id: 'protanopia', labelKey: 'a11y.colorBlind.protanopia' },
+                    { id: 'deuteranopia', labelKey: 'a11y.colorBlind.deuteranopia' },
+                    { id: 'tritanopia', labelKey: 'a11y.colorBlind.tritanopia' },
+                    { id: 'achromatopsia', labelKey: 'a11y.colorBlind.achromatopsia' },
+                  ] as { id: Daltonism; labelKey: TranslationKey }[]).map((opt) => {
                     const active = prefs.daltonism === opt.id
                     return (
                       <button
@@ -356,23 +364,23 @@ export function AccessibilityWidget() {
                         }`}
                       >
                         <Eye aria-hidden="true" className="w-3.5 h-3.5 shrink-0" />
-                        {opt.label}
+                        {t(opt.labelKey)}
                       </button>
                     )
                   })}
                 </div>
               </Group>
 
-              <Group title="Libras">
+              <Group title={t('a11y.group.libras')}>
                 <ToggleRow
                   icon={<Hand aria-hidden="true" className="w-4 h-4" />}
-                  label="Tradução em Libras (VLibras)"
+                  label={t('a11y.libras.toggle')}
                   active={prefs.libras}
                   onChange={(v) => update('libras', v)}
                 />
                 {prefs.libras && (
                   <p className="text-[11px] text-white/60 leading-relaxed">
-                    O ícone do VLibras aparecerá na tela. Clique nele para abrir o tradutor.
+                    {t('a11y.libras.hint')}
                   </p>
                 )}
               </Group>
@@ -383,7 +391,7 @@ export function AccessibilityWidget() {
                 className="w-full flex items-center justify-center gap-2 px-3 py-2.5 border border-white/15 text-xs font-medium tracking-wide uppercase hover:bg-white/5 hover:border-white/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400 transition-colors"
               >
                 <RotateCcw aria-hidden="true" className="w-3.5 h-3.5" />
-                Restaurar padrões
+                {t('a11y.restoreDefaults')}
               </button>
             </div>
             </motion.div>

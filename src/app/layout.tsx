@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { PWAInstaller } from "@/components/PWAInstaller";
+import { LocaleProvider } from "@/lib/i18n/LocaleContext";
 import { heroProjects } from "./portfolioData";
 import { SITE } from "@/lib/site";
 import { CONTACT } from "@/lib/contact";
@@ -189,9 +190,11 @@ export default function RootLayout({
         >
           Pular para o conteúdo principal
         </a>
-        {children}
-        <Toaster />
-        <PWAInstaller />
+        <LocaleProvider>
+          {children}
+          <Toaster />
+          <PWAInstaller />
+        </LocaleProvider>
       </body>
     </html>
   );

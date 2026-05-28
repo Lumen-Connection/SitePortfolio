@@ -3,25 +3,26 @@
 import { useRef } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { CornerBrackets, SectionLabel } from '@/components/ui/corner-brackets'
-
-const pillars = [
-  {
-    word: 'Lumen',
-    subtitle: 'O nosso DNA criativo',
-    body: 'É o brilho da ideia inicial, a precisão de uma renderização 3D e a estética que torna uma marca inesquecível. Entendemos que o design é o que traz clareza ao mundo digital.',
-    accent: '#f97316',
-    number: '01',
-  },
-  {
-    word: 'Connection',
-    subtitle: 'A nossa base técnica',
-    body: 'Inspirados pela filosofia de construir pontes onde antes havia isolamento, unimos programação, branding e audiovisual para criar ecossistemas que funcionam. Não entregamos apenas arquivos; entregamos infraestruturas que conectam sua marca ao público final.',
-    accent: '#3b82f6',
-    number: '02',
-  },
-]
+import { useTranslation } from '@/lib/i18n/LocaleContext'
 
 export function AboutSection({ activeColor = '#f97316' }: { activeColor?: string }) {
+  const { t } = useTranslation()
+  const pillars = [
+    {
+      word: 'Lumen',
+      subtitle: t('about.pillar1.subtitle'),
+      body: t('about.pillar1.body'),
+      accent: '#f97316',
+      number: '01',
+    },
+    {
+      word: 'Connection',
+      subtitle: t('about.pillar2.subtitle'),
+      body: t('about.pillar2.body'),
+      accent: '#3b82f6',
+      number: '02',
+    },
+  ]
   const sectionRef = useRef<HTMLDivElement>(null)
 
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] })
@@ -48,12 +49,12 @@ export function AboutSection({ activeColor = '#f97316' }: { activeColor?: string
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
         >
-          <SectionLabel color={activeColor} className="mb-7">Sobre Nós</SectionLabel>
+          <SectionLabel color={activeColor} className="mb-7">{t('about.label')}</SectionLabel>
           <h2 id="about-heading" className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.05] tracking-tight mb-5 sm:mb-6 text-white">
             Lumen <span style={{ color: activeColor }}>Connection</span>
           </h2>
           <p className="text-white/90 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-            Um coletivo de desenvolvedores, artistas 3D e estrategistas visuais.
+            {t('about.intro')}
           </p>
         </motion.div>
 
@@ -119,10 +120,10 @@ export function AboutSection({ activeColor = '#f97316' }: { activeColor?: string
         >
           <div className="w-12 h-px bg-white/20 mx-auto mb-10" />
           <blockquote className="text-xl sm:text-2xl md:text-3xl font-light text-white/85 leading-relaxed italic tracking-tight">
-            "Nossa missão é simples:{' '}
-            <span className="font-semibold not-italic" style={{ color: activeColor }}>Iluminar conceitos</span>{' '}
-            e{' '}
-            <span className="text-white font-semibold not-italic">conectar realidades.</span>"
+            {t('about.quote.part1')}{' '}
+            <span className="font-semibold not-italic" style={{ color: activeColor }}>{t('about.quote.highlight1')}</span>{' '}
+            {t('about.quote.and')}{' '}
+            <span className="text-white font-semibold not-italic">{t('about.quote.highlight2')}</span>{t('about.quote.end')}
           </blockquote>
           <p className="mt-8 text-white/90 text-[10px] tracking-[0.3em] uppercase">
             — Lumen Connection

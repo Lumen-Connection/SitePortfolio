@@ -6,17 +6,17 @@ import { heroProjects as projects } from '@/app/portfolioData'
 import { CornerBrackets } from '@/components/ui/corner-brackets'
 import { buildWhatsAppUrl, buildProjectInterestMessage } from '@/lib/contact'
 import { sanitizeUrl } from '@/lib/url'
-
-const HERO_STATS = [
-  { value: '+10', label: 'Projetos\nEntregues' },
-  { value: '+20', label: 'Tecnologias\nDominadas' },
-  { value: '100%', label: 'Dedicação\nEm Cada Entrega' },
-]
+import { useTranslation } from '@/lib/i18n/LocaleContext'
+import { tField } from '@/lib/i18n/tField'
 
 function HeroSlide({ project, isActive, onVerProjeto }: { project: typeof projects[0]; isActive: boolean; onVerProjeto: () => void }) {
-  const ctaLabel: string = (project as any).ctaLabel ?? 'Iniciar Projeto'
+  const { t, locale } = useTranslation()
+  const title = tField(project, 'title', locale)
+  const category = tField(project, 'category', locale)
+  const description = tField(project, 'description', locale)
+  const subtitle = tField(project, 'subtitle', locale) || undefined
+  const ctaLabel = tField(project, 'ctaLabel', locale) || t('hero.ctaPrimaryDefault')
   const explicitCtaHref: string | undefined = (project as any).ctaHref
-  const subtitle: string | undefined = (project as any).subtitle
   const whatsappHref = buildWhatsAppUrl(buildProjectInterestMessage(project.category))
   const ctaHref = sanitizeUrl(explicitCtaHref ?? whatsappHref)
 
@@ -24,7 +24,7 @@ function HeroSlide({ project, isActive, onVerProjeto }: { project: typeof projec
     <motion.div
       role="group"
       aria-roledescription="slide"
-      aria-label={`${project.category}: ${project.title}`}
+      aria-label={`${category}: ${title}`}
       className="absolute inset-0"
       initial={{ opacity: 0 }}
       animate={{ opacity: isActive ? 1 : 0 }}
@@ -33,7 +33,7 @@ function HeroSlide({ project, isActive, onVerProjeto }: { project: typeof projec
       {project.image && project.image !== '/' && (
         <>
           <div className="absolute inset-0 z-0">
-            <img src={project.image} alt={`${project.title} — ${project.category}`} className="w-full h-full object-cover" decoding={isActive ? 'sync' : 'async'} fetchPriority={isActive ? 'high' : 'low'} loading="eager" />
+            <img src={project.image} alt={`${title} — ${category}`} className="w-full h-full object-cover" decoding={isActive ? 'sync' : 'async'} fetchPriority={isActive ? 'high' : 'low'} loading="eager" />
           </div>
           <div className="absolute inset-0 z-[1] bg-gradient-to-br from-black/80 via-black/65 to-black/85" aria-hidden />
           <div className="absolute inset-0 z-[1] bg-gradient-to-r from-black/60 via-transparent to-transparent" aria-hidden />
@@ -62,7 +62,7 @@ function HeroSlide({ project, isActive, onVerProjeto }: { project: typeof projec
                 className="text-xs font-medium tracking-[0.25em] uppercase"
                 style={{ color: project.color }}
               >
-                {project.category}
+                {category}
               </span>
             </motion.div>
 
@@ -73,10 +73,10 @@ function HeroSlide({ project, isActive, onVerProjeto }: { project: typeof projec
                 animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 30 }}
                 transition={{ duration: 0.6, delay: 0.25 }}
               >
-                <span className="sr-only">{project.title}</span>
+                <span className="sr-only">{title}</span>
                 <img
                   src="/LC - Logos/Lumen Connection white fonte.webp"
-                  alt={project.title}
+                  alt={title}
                   aria-hidden="true"
                   width={2573}
                   height={320}
@@ -95,7 +95,7 @@ function HeroSlide({ project, isActive, onVerProjeto }: { project: typeof projec
                 animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 30 }}
                 transition={{ duration: 0.6, delay: 0.25 }}
               >
-                {project.title}
+                {title}
               </motion.h1>
             )}
 
@@ -117,7 +117,7 @@ function HeroSlide({ project, isActive, onVerProjeto }: { project: typeof projec
               animate={{ opacity: isActive ? 1 : 0, y: isActive ? 0 : 30 }}
               transition={{ duration: 0.6, delay: 0.35 }}
             >
-              {project.description}
+              {description}
             </motion.p>
 
             <motion.div
@@ -143,7 +143,7 @@ function HeroSlide({ project, isActive, onVerProjeto }: { project: typeof projec
                 onClick={onVerProjeto}
               >
                 <CornerBrackets />
-                Ver Nossos Trabalhos
+                {t('hero.ctaSecondary')}
               </motion.button>
             </motion.div>
           </div>
@@ -160,10 +160,17 @@ export function HeroSection({
   onVerProjeto: (category: string) => void
   onSlideChange?: (index: number) => void
 }) {
+  const { t, locale } = useTranslation()
+  const HERO_STATS = [
+    { value: t('hero.stats.projectsValue'), label: t('hero.stats.projectsLabel') },
+    { value: t('hero.stats.techValue'), label: t('hero.stats.techLabel') },
+    { value: t('hero.stats.dedicationValue'), label: t('hero.stats.dedicationLabel') },
+  ]
   const [currentSlide, setCurrentSlide] = useState(0)
   const [isCarouselPaused, setIsCarouselPaused] = useState(false)
   const [mounted, setMounted] = useState(false)
   const [a11yMode, setA11yMode] = useState(false)
+  const [isLumenAIOpen, setIsLumenAIOpen] = useState(false)
   useEffect(() => { setMounted(true) }, [])
   useEffect(() => {
     if (typeof document === 'undefined') return
@@ -173,6 +180,18 @@ export function HeroSection({
     const obs = new MutationObserver(sync)
     obs.observe(html, { attributes: true, attributeFilter: ['class'] })
     return () => obs.disconnect()
+  }, [])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    const onOpen = () => setIsLumenAIOpen(true)
+    const onClose = () => setIsLumenAIOpen(false)
+    window.addEventListener('lumen-ai-modal:open', onOpen)
+    window.addEventListener('lumen-ai-modal:close', onClose)
+    return () => {
+      window.removeEventListener('lumen-ai-modal:open', onOpen)
+      window.removeEventListener('lumen-ai-modal:close', onClose)
+    }
   }, [])
 
   const { scrollY } = useScroll()
@@ -197,10 +216,10 @@ export function HeroSection({
   }, [currentSlide, onSlideChange])
 
   useEffect(() => {
-    if (isCarouselPaused || a11yMode) return
+    if (isCarouselPaused || a11yMode || isLumenAIOpen) return
     const timer = setTimeout(() => setCurrentSlide((prev) => (prev + 1) % projects.length), 8500)
     return () => clearTimeout(timer)
-  }, [isCarouselPaused, currentSlide, a11yMode])
+  }, [isCarouselPaused, currentSlide, a11yMode, isLumenAIOpen])
 
   const nextSlide = useCallback(() => setCurrentSlide((prev) => (prev + 1) % projects.length), [])
   const prevSlide = useCallback(() => setCurrentSlide((prev) => (prev - 1 + projects.length) % projects.length), [])
@@ -224,7 +243,7 @@ export function HeroSection({
       id="home"
       className="relative h-screen overflow-hidden"
       aria-roledescription="carrossel"
-      aria-label="Destaques de serviços"
+      aria-label={t('hero.carousel.label')}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
@@ -247,7 +266,7 @@ export function HeroSection({
       <motion.div aria-hidden="true" className="absolute inset-0 bg-[#0a0a0a] pointer-events-none z-10" style={{ opacity: carouselDarkenSmooth }} />
 
       <div className="sr-only" aria-live="polite" aria-atomic="true">
-        Slide {currentSlide + 1} de {projects.length}: {projects[currentSlide]?.title}
+        {t('hero.carousel.slide')} {currentSlide + 1} {t('hero.carousel.slideOf')} {projects.length}: {projects[currentSlide] ? tField(projects[currentSlide], 'title', locale) : ''}
       </div>
       </section>
 
@@ -288,14 +307,14 @@ export function HeroSection({
           <div className="absolute bottom-6 sm:bottom-8 left-0 right-0">
             <div className="container mx-auto px-4 sm:px-6">
               <div className="flex items-center justify-between gap-3">
-                <div role="tablist" aria-label="Selecionar slide" className="hidden sm:flex items-center gap-3 flex-wrap">
+                <div role="tablist" aria-label={t('hero.carousel.select')} className="hidden sm:flex items-center gap-3 flex-wrap">
                   {projects.map((project, index) => (
                     <button
                       key={project.id}
                       type="button"
                       role="tab"
                       aria-selected={currentSlide === index}
-                      aria-label={`Slide ${index + 1} de ${projects.length}: ${project.title}`}
+                      aria-label={`${t('hero.carousel.slide')} ${index + 1} ${t('hero.carousel.slideOf')} ${projects.length}: ${tField(project, 'title', locale)}`}
                       className="group relative h-1 rounded-full overflow-hidden transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
                       style={{
                         width: currentSlide === index ? '60px' : '40px',
@@ -311,7 +330,7 @@ export function HeroSection({
                             animationDuration: '10s',
                             animationTimingFunction: 'linear',
                             animationFillMode: 'forwards',
-                            animationPlayState: isCarouselPaused ? 'paused' : 'running',
+                            animationPlayState: isCarouselPaused || isLumenAIOpen ? 'paused' : 'running',
                           }}
                         />
                       )}
@@ -332,7 +351,7 @@ export function HeroSection({
                     className="w-9 h-9 sm:w-11 sm:h-11 border border-white/15 bg-black/40 flex items-center justify-center text-white hover:bg-white/10 hover:border-white/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
                     onClick={() => setIsCarouselPaused((p) => !p)}
                     whileTap={{ scale: 0.95 }}
-                    aria-label={isCarouselPaused ? 'Reproduzir carrossel' : 'Pausar carrossel'}
+                    aria-label={isCarouselPaused ? t('hero.carousel.play') : t('hero.carousel.pause')}
                   >
                     {isCarouselPaused ? <Play aria-hidden="true" className="w-4 h-4" /> : <Pause aria-hidden="true" className="w-4 h-4" />}
                   </motion.button>
@@ -341,7 +360,7 @@ export function HeroSection({
                     className="w-9 h-9 sm:w-11 sm:h-11 border border-white/15 bg-black/40 flex items-center justify-center text-white hover:bg-white/10 hover:border-white/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
                     onClick={prevSlide}
                     whileTap={{ scale: 0.95 }}
-                    aria-label="Slide anterior"
+                    aria-label={t('hero.carousel.previous')}
                   >
                     <ChevronLeft aria-hidden="true" className="w-4 h-4" />
                   </motion.button>
@@ -350,7 +369,7 @@ export function HeroSection({
                     className="w-9 h-9 sm:w-11 sm:h-11 border border-white/15 bg-black/40 flex items-center justify-center text-white hover:bg-white/10 hover:border-white/40 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
                     onClick={nextSlide}
                     whileTap={{ scale: 0.95 }}
-                    aria-label="Próximo slide"
+                    aria-label={t('hero.carousel.next')}
                   >
                     <ChevronRight aria-hidden="true" className="w-4 h-4" />
                   </motion.button>

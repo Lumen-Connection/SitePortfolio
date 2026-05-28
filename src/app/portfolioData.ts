@@ -4,6 +4,7 @@ export {
   sectionProjects,
   successCases,
   categories,
+  categoryTranslationKey,
   navItems,
 } from '@/data'
 
