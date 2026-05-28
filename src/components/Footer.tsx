@@ -13,10 +13,14 @@ export function Footer() {
           <div className="md:col-span-2">
             <div className="flex items-center mb-5">
               <img
-                src="/LC - Logos/Lumen Connection white logo.png"
+                src="/LC - Logos/Lumen Connection white logo.webp"
                 alt="Lumen Connection"
+                width={480}
+                height={50}
                 className="h-9 sm:h-10 w-auto select-none"
                 draggable={false}
+                decoding="async"
+                loading="lazy"
               />
             </div>
             <p className="text-white/90 text-sm leading-relaxed max-w-sm">

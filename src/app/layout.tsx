@@ -166,8 +166,14 @@ export default function RootLayout({
         <link
           rel="preload"
           as="image"
-          href="/LC - Logos/Lumen Connection white fonte.webp"
+          href="/LC - Logos/Lumen Connection white logo.webp"
           fetchPriority="high"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/LC - Logos/Lumen Connection white fonte.webp"
+          fetchPriority="low"
         />
         {otherHeroImages.map((src) => (
           <link key={src} rel="prefetch" as="image" href={src} />

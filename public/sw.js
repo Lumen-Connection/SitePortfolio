@@ -2,7 +2,7 @@
 // Strategy: stale-while-revalidate for static assets, network-first for navigation,
 // cache-first for images/fonts. Offline fallback for navigation.
 
-const VERSION = 'v1'
+const VERSION = 'v2'
 const STATIC_CACHE = `lc-static-${VERSION}`
 const RUNTIME_CACHE = `lc-runtime-${VERSION}`
 const IMAGE_CACHE = `lc-images-${VERSION}`
@@ -13,7 +13,7 @@ const PRECACHE_URLS = [
   '/icons/icon-192.png',
   '/icons/icon-512.png',
   '/icons/apple-touch-icon.png',
-  '/LC - Logos/Lumen Connection white logo.png',
+  '/LC - Logos/Lumen Connection white logo.webp',
   '/LC - Logos/Lumen Connection white fonte.webp',
   '/images/hero/lumen-bg.webp',
 ]
