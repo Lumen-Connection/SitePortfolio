@@ -7,21 +7,28 @@ import { X, MessageCircle, Bot, Shield, Clock } from 'lucide-react'
 import { CornerBrackets } from '@/components/ui/corner-brackets'
 import { buildWhatsAppUrl } from '@/lib/contact'
 import { sanitizeUrl } from '@/lib/url'
-
-const CTA_MESSAGE = 'Olá, gostaria de saber mais sobre o Lumen AI'
-
-const HIGHLIGHTS = [
-  { icon: Bot, title: 'Conversação Natural', body: 'IA que entende intenção e contexto, com agendamentos sem menus rígidos.' },
-  { icon: Shield, title: 'Privacidade Total', body: 'Modelos executados na infraestrutura da empresa, sem nuvem terceira.' },
-  { icon: Clock, title: 'Disponível 24/7', body: 'Respostas precisas a qualquer hora, reduzindo abandono de atendimento.' },
-]
+import { useTranslation } from '@/lib/i18n/LocaleContext'
 
 export function LumenAIModal({ onClose, activeColor = '#f97316' }: { onClose: () => void; activeColor?: string }) {
+  const { t } = useTranslation()
+  const highlights = [
+    { icon: Bot, title: t('lumenAI.highlight.conversation.title'), body: t('lumenAI.highlight.conversation.body') },
+    { icon: Shield, title: t('lumenAI.highlight.privacy.title'), body: t('lumenAI.highlight.privacy.body') },
+    { icon: Clock, title: t('lumenAI.highlight.availability.title'), body: t('lumenAI.highlight.availability.body') },
+  ]
   const [mounted, setMounted] = useState(false)
   const dialogRef = useRef<HTMLDivElement>(null)
   const previouslyFocused = useRef<HTMLElement | null>(null)
 
   useEffect(() => { setMounted(true) }, [])
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    window.dispatchEvent(new Event('lumen-ai-modal:open'))
+    return () => {
+      window.dispatchEvent(new Event('lumen-ai-modal:close'))
+    }
+  }, [])
 
   useEffect(() => {
     if (!mounted) return
@@ -99,7 +106,7 @@ export function LumenAIModal({ onClose, activeColor = '#f97316' }: { onClose: ()
               onClick={onClose}
               className="absolute top-4 right-4 z-20 w-9 h-9 border border-white/15 bg-black/60 text-white/90 hover:text-white hover:border-white/40 transition-colors flex items-center justify-center focus-visible:outline-none focus-visible:ring-2"
               style={{ ['--tw-ring-color' as string]: activeColor }}
-              aria-label="Fechar Lumen AI"
+              aria-label={t('lumenAI.closeAria')}
             >
               <X aria-hidden="true" size={16} />
             </button>
@@ -122,24 +129,23 @@ export function LumenAIModal({ onClose, activeColor = '#f97316' }: { onClose: ()
                   className="text-xs font-medium tracking-[0.3em] uppercase"
                   style={{ color: activeColor }}
                 >
-                  IA · WhatsApp
+                  {t('lumenAI.label')}
                 </span>
                 <h2 id="lumen-ai-modal-title" className="mt-4 text-2xl sm:text-3xl font-semibold text-white leading-tight tracking-tight">
-                  Atendimento inteligente,{' '}
-                  <span style={{ color: activeColor }}>privado</span> e 24/7
+                  {t('lumenAI.title.part1')}{' '}
+                  <span style={{ color: activeColor }}>{t('lumenAI.title.highlight')}</span> {t('lumenAI.title.part2')}
                 </h2>
               </div>
 
               <p className="text-white/75 text-sm sm:text-base leading-relaxed mb-6">
-                O <span className="text-white font-medium">Lumen AI</span> integra uma inteligência artificial
-                local diretamente ao WhatsApp da sua empresa. O bot entende o que o cliente fala de forma
-                conversacional, como{' '}
-                <span className="text-white/90 italic">&quot;tem vaga na próxima semana para um corte?&quot;</span>,
-                interpreta o pedido, verifica a disponibilidade e confirma o horário com naturalidade.
+                {t('lumenAI.intro.before')}{t('lumenAI.intro.before') ? ' ' : ''}
+                <span className="text-white font-medium">{t('lumenAI.intro.brand')}</span>{' '}
+                {t('lumenAI.intro.middle')}{' '}
+                <span className="text-white/90 italic">{t('lumenAI.exampleMessage')}</span>{t('lumenAI.intro.end')}
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-7">
-                {HIGHLIGHTS.map((item) => {
+                {highlights.map((item) => {
                   const Icon = item.icon
                   return (
                     <div
@@ -155,14 +161,12 @@ export function LumenAIModal({ onClose, activeColor = '#f97316' }: { onClose: ()
               </div>
 
               <p className="text-white/60 text-xs sm:text-sm leading-relaxed mb-7">
-                Ideal para salões, clínicas, consultórios, academias, oficinas e qualquer negócio que
-                transforme conversas em agendamentos. Toda a infraestrutura roda em servidor próprio com
-                modelos de IA de 4B a 128B parâmetros, integrados via n8n e WAHA.
+                {t('lumenAI.footer')}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3">
                 <motion.a
-                  href={sanitizeUrl(buildWhatsAppUrl(CTA_MESSAGE))}
+                  href={sanitizeUrl(buildWhatsAppUrl(t('lumenAI.ctaMessage')))}
                   target="_blank"
                   rel="noreferrer"
                   className="inline-flex items-center justify-center gap-2 px-6 py-3 text-black text-sm font-semibold tracking-wide transition-colors"
@@ -171,7 +175,7 @@ export function LumenAIModal({ onClose, activeColor = '#f97316' }: { onClose: ()
                   onClick={onClose}
                 >
                   <MessageCircle aria-hidden="true" size={16} />
-                  Quero conhecer o Lumen AI
+                  {t('lumenAI.cta')}
                 </motion.a>
                 <button
                   type="button"
@@ -181,7 +185,7 @@ export function LumenAIModal({ onClose, activeColor = '#f97316' }: { onClose: ()
                 >
                   <CornerBrackets />
                   <X aria-hidden="true" size={14} />
-                  Fechar
+                  {t('lumenAI.close')}
                 </button>
               </div>
             </div>

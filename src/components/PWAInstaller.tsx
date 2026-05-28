@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Download, X, Share, Plus } from 'lucide-react'
 import { CornerBrackets } from '@/components/ui/corner-brackets'
+import { useTranslation } from '@/lib/i18n/LocaleContext'
 
 type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>
@@ -38,6 +39,7 @@ function recentlyDismissed(): boolean {
 }
 
 export function PWAInstaller() {
+  const { t } = useTranslation()
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null)
   const [showIOS, setShowIOS] = useState(false)
   const [visible, setVisible] = useState(false)
@@ -126,7 +128,7 @@ export function PWAInstaller() {
             type="button"
             onClick={handleDismiss}
             className="absolute top-2.5 right-2.5 w-7 h-7 flex items-center justify-center text-white/60 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
-            aria-label="Dispensar prompt de instalação"
+            aria-label={t('pwa.dismissAria')}
           >
             <X aria-hidden="true" className="w-4 h-4" />
           </button>
@@ -148,26 +150,25 @@ export function PWAInstaller() {
                 id="pwa-install-title"
                 className="text-sm font-semibold text-white leading-tight mb-1"
               >
-                Adicione à tela inicial
+                {t('pwa.title')}
               </p>
               {showIOS ? (
                 <p className="text-xs text-white/65 leading-relaxed">
-                  Toque em{' '}
+                  {t('pwa.iosInstructions.tap')}{' '}
                   <span className="inline-flex items-center gap-1 align-middle text-white">
                     <Share aria-hidden="true" className="w-3.5 h-3.5" />
-                    Compartilhar
+                    {t('pwa.iosShare')}
                   </span>{' '}
-                  e depois em{' '}
+                  {t('pwa.iosInstructions.then')}{' '}
                   <span className="inline-flex items-center gap-1 align-middle text-white">
                     <Plus aria-hidden="true" className="w-3.5 h-3.5" />
-                    Adicionar à Tela de Início
+                    {t('pwa.iosAdd')}
                   </span>
                   .
                 </p>
               ) : (
                 <p className="text-xs text-white/65 leading-relaxed">
-                  Instale a Lumen Connection para acesso rápido, modo offline e
-                  experiência como app nativo.
+                  {t('pwa.body')}
                 </p>
               )}
             </div>
@@ -182,7 +183,7 @@ export function PWAInstaller() {
                 className="relative flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-orange-500 hover:bg-orange-400 disabled:opacity-50 disabled:cursor-not-allowed text-black text-xs font-semibold tracking-[0.15em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
               >
                 <Download aria-hidden="true" className="w-4 h-4" />
-                Instalar
+                {t('pwa.install')}
               </button>
               <button
                 type="button"
@@ -190,7 +191,7 @@ export function PWAInstaller() {
                 className="relative px-4 py-2.5 border border-white/15 text-white/80 hover:text-white hover:border-white/35 text-xs font-medium tracking-[0.15em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
               >
                 <CornerBrackets />
-                Agora não
+                {t('pwa.notNow')}
               </button>
             </div>
           )}

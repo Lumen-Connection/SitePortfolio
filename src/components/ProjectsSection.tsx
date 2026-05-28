@@ -1,11 +1,23 @@
 import { useRef, useState, useEffect, useCallback, memo } from 'react'
 import { createPortal } from 'react-dom'
 import { motion, AnimatePresence, useScroll, useTransform, useMotionTemplate } from 'framer-motion'
-import { ArrowRight, ArrowLeft, ExternalLink, Download, Code2 } from 'lucide-react'
-import { categories, sectionProjects as projects, ProjectItem } from '@/app/portfolioData'
+import { ArrowRight, ArrowLeft, ExternalLink, Download, Code2, Images, ZoomIn } from 'lucide-react'
+import { categories, categoryTranslationKey, sectionProjects as projects, ProjectItem } from '@/app/portfolioData'
 import { CornerBrackets, SectionLabel } from '@/components/ui/corner-brackets'
 import { hasMedia, isVideoSource } from '@/lib/media'
 import { sanitizeUrl } from '@/lib/url'
+import { DesktopOnlyModal } from '@/components/DesktopOnlyModal'
+import { GalleryModal } from '@/components/GalleryModal'
+import { useTranslation } from '@/lib/i18n/LocaleContext'
+import { tField } from '@/lib/i18n/tField'
+import type { TranslationKey } from '@/lib/i18n/translations'
+
+function isMobileDevice(): boolean {
+  if (typeof navigator === 'undefined') return false
+  const ua = navigator.userAgent
+  const iPadOS = navigator.platform === 'MacIntel' && (navigator as unknown as { maxTouchPoints?: number }).maxTouchPoints! > 1
+  return /Android|iPhone|iPod|iPad|webOS|BlackBerry|IEMobile|Opera Mini/i.test(ua) || iPadOS
+}
 
 const DEFAULT_BANNER = '/videos/banners/video-banner.webm'
 
@@ -14,6 +26,10 @@ const ProjectCard = memo(function ProjectCard({ project, index, onSaibaMais }: {
   index: number
   onSaibaMais: () => void
 }) {
+  const { t, locale } = useTranslation()
+  const title = tField(project, 'title', locale)
+  const description = tField(project, 'description', locale)
+  const category = tField(project, 'category', locale)
   const hasValidBanner = hasMedia(project.bannerImage) && !project.bannerImage.startsWith('/api/placeholder')
   const mediaSrc = hasValidBanner ? project.bannerImage : project.image
   const bannerIsVideo = isVideoSource(mediaSrc)
@@ -55,15 +71,15 @@ const ProjectCard = memo(function ProjectCard({ project, index, onSaibaMais }: {
             className="text-[10px] font-medium tracking-[0.25em] uppercase"
             style={{ color: project.color }}
           >
-            {project.category}
+            {category}
           </span>
         </div>
         <div className="mb-4">
           <h3 className="text-lg font-semibold mb-1.5 leading-tight tracking-tight text-white">
-            {project.title}
+            {title}
           </h3>
           <p className="text-white/90 text-xs line-clamp-2 leading-relaxed">
-            {project.description}
+            {description}
           </p>
         </div>
         <motion.button
@@ -71,10 +87,10 @@ const ProjectCard = memo(function ProjectCard({ project, index, onSaibaMais }: {
           className="relative w-full py-2.5 border border-white/20 text-xs font-medium tracking-wide flex items-center justify-center gap-2 text-white group-hover:bg-white group-hover:text-black group-hover:border-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
           whileTap={{ scale: 0.98 }}
           onClick={onSaibaMais}
-          aria-label={`Saiba mais sobre ${project.title}`}
+          aria-label={`${t('item.learnMoreAria')} ${title}`}
         >
           <CornerBrackets />
-          Saiba mais <ArrowRight aria-hidden="true" className="w-3 h-3 transition-transform group-hover:translate-x-1" />
+          {t('item.learnMore')} <ArrowRight aria-hidden="true" className="w-3 h-3 transition-transform group-hover:translate-x-1" />
         </motion.button>
       </div>
     </motion.div>
@@ -82,22 +98,58 @@ const ProjectCard = memo(function ProjectCard({ project, index, onSaibaMais }: {
 })
 
 const ItemCard = memo(function ItemCard({ item, index }: { item: ProjectItem; index: number }) {
+  const { t, locale } = useTranslation()
+  const itemTitle = tField(item, 'title', locale)
+  const itemDescription = tField(item, 'description', locale)
   const itemHasMedia = hasMedia(item.image)
   const isVideo = isVideoSource(item.image)
+  const [showDesktopWarn, setShowDesktopWarn] = useState(false)
+  const [showGallery, setShowGallery] = useState(false)
+
+  const hasGallery = !!(item.gallery && item.gallery.length > 0)
+
+  const handleDownloadClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (item.desktopOnly && isMobileDevice()) {
+      e.preventDefault()
+      setShowDesktopWarn(true)
+    }
+  }
+
+  const handleCardClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!hasGallery) return
+    const target = e.target as HTMLElement
+    if (target.closest('a, button')) return
+    setShowGallery(true)
+  }
+
+  const handleCardKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (!hasGallery) return
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      setShowGallery(true)
+    }
+  }
 
   return (
+    <>
     <motion.div
-      className="relative overflow-hidden group h-[240px] sm:h-[260px] md:h-[280px] w-full border border-white/10 hover:border-white/25 transition-colors"
+      className={`relative overflow-hidden group h-[240px] sm:h-[260px] md:h-[280px] w-full border border-white/10 hover:border-white/25 transition-colors ${hasGallery ? 'cursor-pointer' : ''}`}
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.08 }}
+      onClick={handleCardClick}
+      onKeyDown={handleCardKey}
+      role={hasGallery ? 'button' : undefined}
+      tabIndex={hasGallery ? 0 : undefined}
+      aria-haspopup={hasGallery ? 'dialog' : undefined}
+      aria-label={hasGallery ? `Abrir galeria de ${itemTitle}` : undefined}
     >
       {itemHasMedia && (
         isVideo ? (
           <video
             src={item.image}
-            aria-label={`Demonstração visual de ${item.title}`}
+            aria-label={`Demonstração visual de ${itemTitle}`}
             autoPlay
             loop
             muted
@@ -109,7 +161,7 @@ const ItemCard = memo(function ItemCard({ item, index }: { item: ProjectItem; in
         ) : (
           <img
             src={item.image}
-            alt={item.title}
+            alt={itemTitle}
             loading="lazy"
             decoding="async"
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -118,8 +170,8 @@ const ItemCard = memo(function ItemCard({ item, index }: { item: ProjectItem; in
       )}
       <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
       <div className={`relative z-10 h-full flex flex-col p-5 ${itemHasMedia ? 'justify-end' : 'justify-center items-center text-center'}`}>
-        <h4 className="text-white font-semibold mb-1.5 leading-tight tracking-tight">{item.title}</h4>
-        <p className="text-white/60 text-xs line-clamp-2 mb-3 leading-relaxed">{item.description}</p>
+        <h4 className="text-white font-semibold mb-1.5 leading-tight tracking-tight">{itemTitle}</h4>
+        <p className="text-white/60 text-xs line-clamp-2 mb-3 leading-relaxed">{itemDescription}</p>
         {item.downloadUrl ? (
           <div className="flex flex-wrap items-center gap-2">
             <a
@@ -127,11 +179,12 @@ const ItemCard = memo(function ItemCard({ item, index }: { item: ProjectItem; in
               target="_blank"
               rel="noopener noreferrer"
               download
+              onClick={handleDownloadClick}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-orange-500 hover:bg-orange-400 text-black text-[10px] font-semibold tracking-[0.18em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
-              aria-label={`Baixar ${item.title}`}
+              aria-label={`${t('item.downloadAria')} ${itemTitle}`}
             >
               <Download aria-hidden="true" className="w-3.5 h-3.5" />
-              Download
+              {t('item.download')}
             </a>
             {item.url && (
               <a
@@ -139,32 +192,72 @@ const ItemCard = memo(function ItemCard({ item, index }: { item: ProjectItem; in
                 target="_blank"
                 rel="noopener noreferrer"
                 className="relative inline-flex items-center gap-1.5 px-3 py-1.5 border border-white/15 text-white/85 hover:text-white hover:border-white/35 text-[10px] font-medium tracking-[0.18em] uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
-                aria-label={`Acessar código aberto de ${item.title}`}
+                aria-label={`${t('item.openSourceAria')} ${itemTitle}`}
               >
                 <CornerBrackets />
                 <Code2 aria-hidden="true" className="w-3.5 h-3.5" />
-                Código Aberto
+                {t('item.openSource')}
               </a>
             )}
           </div>
-        ) : (
-          item.url && (
-            <a
-              href={sanitizeUrl(item.url)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-[10px] font-medium tracking-[0.2em] uppercase text-orange-400 hover:text-orange-300 transition-colors"
+        ) : item.url ? (
+          <a
+            href={sanitizeUrl(item.url)}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 text-[10px] font-medium tracking-[0.2em] uppercase text-orange-400 hover:text-orange-300 transition-colors"
+          >
+            {t('item.viewProject')} <ExternalLink aria-hidden="true" className="w-3 h-3" />
+          </a>
+        ) : hasGallery ? (
+          item.gallery!.length === 1 ? (
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); setShowGallery(true) }}
+              className="relative inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 max-w-full bg-orange-500 hover:bg-orange-400 text-black text-[9px] sm:text-[10px] font-semibold tracking-[0.12em] sm:tracking-[0.18em] uppercase whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
+              aria-haspopup="dialog"
+              aria-label={`${t('item.enlargeAria')} ${itemTitle}`}
             >
-              Ver projeto <ExternalLink aria-hidden="true" className="w-3 h-3" />
-            </a>
+              <ZoomIn aria-hidden="true" className="w-3.5 h-3.5 shrink-0" />
+              {t('item.enlarge')}
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); setShowGallery(true) }}
+              className="relative inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 max-w-full bg-orange-500 hover:bg-orange-400 text-black text-[9px] sm:text-[10px] font-semibold tracking-[0.12em] sm:tracking-[0.18em] uppercase whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
+              aria-haspopup="dialog"
+              aria-label={`${t('item.openGalleryAria')} ${itemTitle}`}
+            >
+              <Images aria-hidden="true" className="w-3.5 h-3.5 shrink-0" />
+              <span className="sm:hidden">{t('item.viewGalleryShort')} · {item.gallery!.length}</span>
+              <span className="hidden sm:inline">{t('item.viewGalleryLong')} · {item.gallery!.length} {t('item.pages')}</span>
+            </button>
           )
-        )}
+        ) : null}
       </div>
     </motion.div>
+    {showDesktopWarn && (
+      <DesktopOnlyModal item={item} onClose={() => setShowDesktopWarn(false)} />
+    )}
+    {showGallery && hasGallery && (
+      <GalleryModal
+        images={item.gallery!}
+        title={itemTitle}
+        description={itemDescription}
+        onClose={() => setShowGallery(false)}
+      />
+    )}
+    </>
   )
 })
 
 export function ProjectsSection({ pendingCategory, viewAllTrigger }: { pendingCategory?: string | null; viewAllTrigger?: number }) {
+  const { t, locale } = useTranslation()
+  const translateCategory = (cat: string) => {
+    const key = categoryTranslationKey[cat]
+    return key ? t(key as TranslationKey) : cat
+  }
   const [activeCategory, setActiveCategory] = useState('Todos')
   const [activeSubcategory, setActiveSubcategory] = useState('Todos')
   const [mounted, setMounted] = useState(false)
@@ -187,6 +280,12 @@ export function ProjectsSection({ pendingCategory, viewAllTrigger }: { pendingCa
   const isDetailView = activeCategory !== 'Todos'
   const activeProject = projects.find((p) => p.category === activeCategory)
 
+  const subcategoryLabel = (sub: string): string => {
+    if (sub === 'Todos') return t('projects.categoryAll')
+    if (locale !== 'en') return sub
+    const item = activeProject?.items.find((i) => i.subcategory === sub && i.subcategory_en)
+    return item?.subcategory_en ?? sub
+  }
   const subcategories = activeProject
     ? ['Todos', ...Array.from(new Set(activeProject.items.filter((i) => i.subcategory).map((i) => i.subcategory as string)))]
     : []
@@ -255,26 +354,26 @@ export function ProjectsSection({ pendingCategory, viewAllTrigger }: { pendingCa
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <SectionLabel color="#f97316" className="mb-4 sm:mb-5">Portfólio</SectionLabel>
+            <SectionLabel color="#f97316" className="mb-4 sm:mb-5">{t('section.portfolio')}</SectionLabel>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-5 leading-[1.05] tracking-tight text-white">
-              Criado no <span style={{ color: '#f97316' }}>Blender</span>
+              {t('projects.banner.title.part1')} <span style={{ color: '#f97316' }}>{t('projects.banner.title.highlight')}</span>
             </h2>
             <p className="text-white/90 text-sm sm:text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
-              Explore nosso portfólio diverso de soluções inovadoras criadas com precisão e criatividade.
+              {t('projects.banner.body')}
             </p>
           </motion.div>
         </div>
       </section>
 
       <section id="projects-content" aria-labelledby="projects-heading" className="pt-10 pb-16 sm:pt-12 sm:pb-20 md:pt-14 md:pb-24 relative bg-black">
-        <h2 id="projects-heading" className="sr-only">Serviços e Projetos</h2>
+        <h2 id="projects-heading" className="sr-only">{t('section.servicesAndProjects')}</h2>
         <div className="sr-only" aria-live="polite" aria-atomic="true">
           {isDetailView
-            ? `Mostrando categoria: ${activeCategory}${activeSubcategory !== 'Todos' ? `, subcategoria: ${activeSubcategory}` : ''}. ${visibleItems.length} itens.`
-            : `Mostrando todos os serviços. ${projects.length} categorias.`}
+            ? `${t('projects.live.showingCategory')}: ${translateCategory(activeCategory)}${activeSubcategory !== 'Todos' ? `, ${t('projects.live.showingSubcategory')}: ${activeSubcategory}` : ''}. ${visibleItems.length} ${t('projects.live.items')}.`
+            : `${t('projects.live.showingAll')} ${projects.length} ${t('projects.live.categories')}.`}
         </div>
         <div className="flex justify-center mb-6 sm:mb-8">
-          <SectionLabel color="#f97316">Serviços</SectionLabel>
+          <SectionLabel color="#f97316">{t('section.services')}</SectionLabel>
         </div>
         <div className="container mx-auto px-5 sm:px-6">
           <motion.div
@@ -288,7 +387,7 @@ export function ProjectsSection({ pendingCategory, viewAllTrigger }: { pendingCa
             <div
               className="flex sm:flex-wrap sm:justify-center gap-2 overflow-x-auto sm:overflow-visible snap-x snap-mandatory px-5 sm:px-0 pb-1 sm:pb-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
               role="tablist"
-              aria-label="Filtrar por categoria"
+              aria-label={t('section.filterByCategory')}
             >
               {categories.map((category) => {
                 const active = activeCategory === category
@@ -306,7 +405,7 @@ export function ProjectsSection({ pendingCategory, viewAllTrigger }: { pendingCa
                     whileTap={{ scale: 0.97 }}
                   >
                     {!active && <CornerBrackets />}
-                    {category}
+                    {translateCategory(category)}
                   </motion.button>
                 )
               })}
@@ -329,7 +428,7 @@ export function ProjectsSection({ pendingCategory, viewAllTrigger }: { pendingCa
                       whileHover={{ x: -3 }}
                     >
                       <ArrowLeft className="w-3.5 h-3.5" />
-                      Todos os serviços
+                      {t('section.allServices')}
                     </motion.button>
                     <span className="text-white/15">|</span>
                     <div className="flex items-center gap-2">
@@ -338,7 +437,7 @@ export function ProjectsSection({ pendingCategory, viewAllTrigger }: { pendingCa
                         className="text-[11px] font-medium tracking-[0.2em] uppercase"
                         style={{ color: activeProject.color }}
                       >
-                        {activeProject.title}
+                        {tField(activeProject, 'title', locale)}
                       </span>
                     </div>
                   </div>
@@ -348,11 +447,11 @@ export function ProjectsSection({ pendingCategory, viewAllTrigger }: { pendingCa
                       onClick={handleBackToAll}
                       className="relative w-full min-h-[48px] flex items-center justify-center gap-2 px-5 py-3 border border-white/30 bg-white/5 text-white text-xs font-semibold tracking-[0.2em] uppercase active:bg-white/10 transition-colors"
                       whileTap={{ scale: 0.98 }}
-                      aria-label="Voltar para todos os serviços"
+                      aria-label={t('section.backToAll')}
                     >
                       <CornerBrackets />
                       <ArrowLeft className="w-4 h-4" />
-                      Todos os serviços
+                      {t('section.allServices')}
                     </motion.button>
                     <div className="flex items-center gap-2">
                       <span className="h-px w-6" style={{ backgroundColor: activeProject.color }} />
@@ -360,7 +459,7 @@ export function ProjectsSection({ pendingCategory, viewAllTrigger }: { pendingCa
                         className="text-[11px] font-medium tracking-[0.2em] uppercase"
                         style={{ color: activeProject.color }}
                       >
-                        {activeProject.title}
+                        {tField(activeProject, 'title', locale)}
                       </span>
                     </div>
                   </div>
@@ -372,7 +471,7 @@ export function ProjectsSection({ pendingCategory, viewAllTrigger }: { pendingCa
                     <div
                       className="flex sm:flex-wrap gap-2 overflow-x-auto sm:overflow-visible snap-x snap-mandatory px-5 sm:px-0 pb-1 sm:pb-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
                       role="tablist"
-                      aria-label="Filtrar por subcategoria"
+                      aria-label={t('section.filterBySubcategory')}
                     >
                       {subcategories.map((sub) => {
                         const active = activeSubcategory === sub
@@ -391,7 +490,7 @@ export function ProjectsSection({ pendingCategory, viewAllTrigger }: { pendingCa
                             whileTap={{ scale: 0.97 }}
                           >
                             {!active && <CornerBrackets />}
-                            {sub}
+                            {subcategoryLabel(sub)}
                           </motion.button>
                         )
                       })}
@@ -462,7 +561,7 @@ export function ProjectsSection({ pendingCategory, viewAllTrigger }: { pendingCa
                   data-a11y-filter="true"
                   onClick={handleBackToAll}
                   className="flex items-center gap-2 px-4 py-3 bg-white text-black text-xs font-semibold tracking-[0.2em] uppercase shadow-lg shadow-black/40 active:scale-[0.96] transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
-                  aria-label="Voltar para todos os serviços"
+                  aria-label={t('section.backToAll')}
                 >
                   <ArrowLeft aria-hidden="true" className="w-4 h-4" />
                   Voltar
