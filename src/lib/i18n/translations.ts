@@ -28,8 +28,8 @@ export const translations = {
     'nav.goHomeAria': 'Lumen Connection — ir para o início',
 
     // Hero
-    'hero.ctaPrimaryDefault': 'Iniciar Projeto',
-    'hero.ctaSecondary': 'Ver Nossos Trabalhos',
+    'hero.ctaPrimaryDefault': 'Inicie um Projeto',
+    'hero.ctaSecondary': 'Veja Nossos Trabalhos',
     'hero.stats.projectsValue': '+10',
     'hero.stats.projectsLabel': 'Projetos\nEntregues',
     'hero.stats.techValue': '+20',
@@ -106,7 +106,7 @@ export const translations = {
       'É o brilho da ideia inicial, a precisão de uma renderização 3D e a estética que torna uma marca inesquecível. Entendemos que o design é o que traz clareza ao mundo digital.',
     'about.pillar2.subtitle': 'A nossa base técnica',
     'about.pillar2.body':
-      'Inspirados pela filosofia de construir pontes onde antes havia isolamento, unimos programação, branding e audiovisual para criar ecossistemas que funcionam. Não entregamos apenas arquivos; entregamos infraestruturas que conectam sua marca ao público final.',
+      'Inspirados pela filosofia de construir pontes onde antes havia isolamento, unimos programação, branding e audiovisual para criar ecossistemas que funcionam. Entregamos infraestruturas que conectam sua marca ao público final.',
     'about.quote.part1': '"Nossa missão é simples:',
     'about.quote.highlight1': 'Iluminar conceitos',
     'about.quote.and': 'e',
@@ -117,7 +117,7 @@ export const translations = {
     'successCases.label': 'Estúdio Digital',
     'successCases.title': 'Edição e programação unidas para criar resultados reais.',
     'successCases.body1':
-      'Atuamos nos dois pilares mais importantes da tecnologia moderna: narrativas visuais e desenvolvimento de software.',
+      'Atuamos em dois dos pilares mais importantes da tecnologia moderna: narrativas visuais e desenvolvimento de software.',
     'successCases.body2':
       'Combinamos edição profissional e código limpo para entregar produtos que escalam e encantam usuários.',
     'successCases.bannerAlt': 'Banner de sucesso',
@@ -162,7 +162,7 @@ export const translations = {
       'IA que entende intenção e contexto, com agendamentos sem menus rígidos.',
     'lumenAI.highlight.privacy.title': 'Privacidade Total',
     'lumenAI.highlight.privacy.body':
-      'Modelos executados na infraestrutura da empresa, sem nuvem terceira.',
+      'Modelos executados em infraestruturas no seu controle.',
     'lumenAI.highlight.availability.title': 'Disponível 24/7',
     'lumenAI.highlight.availability.body':
       'Respostas precisas a qualquer hora, reduzindo abandono de atendimento.',
@@ -221,7 +221,7 @@ export const translations = {
     'cta.title.highlight': 'sucesso',
     'cta.title.end': '?',
     'cta.body':
-      'Transformamos sua visão em realidade — de uma identidade visual marcante a um sistema digital completo. Conectamos ideias a resultados.',
+      'Transformamos sua visão em realidade — de uma identidade visual marcante a um sistema digital completo.',
     'cta.start': 'Iniciar Um Projeto',
     'cta.portfolio': 'Ver Portfólio',
 
@@ -258,7 +258,7 @@ export const translations = {
     'project.studio.subtitle': 'Engenharia de Software · Produção Digital de Alta Fidelidade',
     'project.webDev.description':
       'Trabalhamos com linguagens e frameworks como JavaScript, React, Python, Java, C#, Next.js, Tailwind, HTML, CSS, e muito mais',
-    'project.softwareDev.description': 'Desenvolvimento nativo com Rust, C++, WinUI e Razor',
+    'project.softwareDev.description': 'Desenvolvimento nativo eficiente com Rust, C++, WinUI, Qt e Razor',
     'project.mobileDev.description':
       'Criação rápida usando frameworks como Flutter, React Native e Kotlin',
     'project.videoEditing.description':
@@ -322,9 +322,9 @@ export const translations = {
     'nav.home': 'Home',
     'nav.successCases': 'Success Stories',
     'nav.projects': 'Projects',
-    'nav.contact': 'Contact',
+    'nav.contact': 'Contacts',
     'nav.lumenAI': 'Lumen AI',
-    'nav.contactCta': 'Get in Touch',
+    'nav.contactCta': 'Contact Us',
     'nav.openMenu': 'Open navigation menu',
     'nav.closeMenu': 'Close navigation menu',
     'nav.mobileLabel': 'Mobile navigation',
@@ -346,7 +346,7 @@ export const translations = {
     'hero.carousel.play': 'Play carousel',
     'hero.carousel.select': 'Select slide',
     'hero.carousel.label': 'Service highlights',
-    'hero.carousel.knowStudio': 'Meet the Studio',
+    'hero.carousel.knowStudio': 'Meet the members',
     'hero.carousel.slide': 'Slide',
     'hero.carousel.slideOf': 'of',
 
@@ -376,7 +376,7 @@ export const translations = {
     // Categories
     'category.studio': 'Studio',
     'category.webDev': 'Web Development',
-    'category.softwareDev': 'Software Development',
+    'category.softwareDev': 'Native Development',
     'category.mobileDev': 'Mobile Development',
     'category.videoEditing': 'Video Editing & Social Media',
     'category.design': 'Graphic Design, Branding & Visual Identity',
@@ -410,7 +410,7 @@ export const translations = {
       'It’s the spark of the initial idea, the precision of a 3D render, and the aesthetic that makes a brand unforgettable. We believe design is what brings clarity to the digital world.',
     'about.pillar2.subtitle': 'Our technical foundation',
     'about.pillar2.body':
-      'Inspired by the philosophy of building bridges where there was once isolation, we combine engineering, branding and audiovisual to create ecosystems that work. We don’t just deliver files — we deliver infrastructures that connect your brand to its audience.',
+      'Inspired by the philosophy of \'building bridges\', we combine engineering, branding and audiovisual to create ecosystems that work. We deliver infrastructures that connect your brand to its audience.',
     'about.quote.part1': '"Our mission is simple:',
     'about.quote.highlight1': 'Illuminate ideas',
     'about.quote.and': 'and',
@@ -421,9 +421,9 @@ export const translations = {
     'successCases.label': 'Digital Studio',
     'successCases.title': 'Editing and engineering, together to drive real results.',
     'successCases.body1':
-      'We operate on the two pillars of modern technology: visual storytelling and software engineering.',
+      'We operate on two essential pillars of modern technology: visual storytelling and software engineering.',
     'successCases.body2':
-      'Professional editing meets clean code to ship products that scale and delight users.',
+      'We use professional editing and development to ship products that scale and delight users.',
     'successCases.bannerAlt': 'Success banner',
     'successCases.card1.title': 'Editing & Motion',
     'successCases.card1.body': 'Videos, Reels and animations with storytelling built for retention.',
@@ -457,17 +457,17 @@ export const translations = {
     'lumenAI.intro.before': '',
     'lumenAI.intro.brand': 'Lumen AI',
     'lumenAI.intro.middle':
-      'plugs a local AI straight into your company’s WhatsApp. The bot understands customers conversationally — like',
+      'is a fully local AI service that connects straight into your company’s WhatsApp. The bot understands customers conversationally — like',
     'lumenAI.exampleMessage': '"any opening next week for a haircut?"',
     'lumenAI.intro.end':
       ' — interpreting the request, checking availability and confirming the appointment naturally.',
     'lumenAI.highlight.conversation.title': 'Natural Conversation',
     'lumenAI.highlight.conversation.body':
       'AI that understands intent and context — no rigid menus required.',
-    'lumenAI.highlight.privacy.title': 'Full Privacy',
+    'lumenAI.highlight.privacy.title': 'Total Privacy',
     'lumenAI.highlight.privacy.body':
-      'Models run on your own infrastructure, never on a third-party cloud.',
-    'lumenAI.highlight.availability.title': '24/7 Available',
+      'Models run on infrastructure you have total control over.',
+    'lumenAI.highlight.availability.title': '24/7 Availability',
     'lumenAI.highlight.availability.body':
       'Accurate replies at any hour, dropping customer abandonment rates.',
     'lumenAI.footer':
@@ -510,7 +510,7 @@ export const translations = {
     // PWA install
     'pwa.title': 'Add to home screen',
     'pwa.body':
-      'Install Lumen Connection for quick access, offline mode, and a native app experience.',
+      'Install Lumen Connection for quick access, offline mode, and a native app-like experience.',
     'pwa.iosInstructions.tap': 'Tap',
     'pwa.iosShare': 'Share',
     'pwa.iosInstructions.then': 'and then',
@@ -525,7 +525,7 @@ export const translations = {
     'cta.title.highlight': 'breakthrough',
     'cta.title.end': '?',
     'cta.body':
-      'We turn your vision into reality — from a striking visual identity to a complete digital system. We connect ideas to results.',
+      'We turn your vision into reality — from a striking visual identity to a complete digital system.',
     'cta.start': 'Start a Project',
     'cta.portfolio': 'See Portfolio',
 
@@ -547,7 +547,7 @@ export const translations = {
     // Footer
     'footer.tagline':
       'Digital studio combining software engineering and high-fidelity visual production.',
-    'footer.contact': 'Get in touch',
+    'footer.contact': 'Contact Us',
     'footer.emailAria': 'Send email to',
     'footer.whatsappAria': 'Message on WhatsApp at',
     'footer.copyright': '🄯 2026 Lumen Connection',
@@ -558,17 +558,17 @@ export const translations = {
 
     // Project category card / hero subtitle
     'project.studio.description':
-      'The vital link between digital engineering and visual aesthetics. From the spark of an idea to the concepts that connect worlds.',
+      'The missing link between digital engineering and visual aesthetics. From the light of an idea we make bridges that connect worlds.',
     'project.studio.subtitle': 'Software Engineering · High-Fidelity Digital Production',
     'project.webDev.description':
       'We work with languages and frameworks like JavaScript, React, Python, Java, C#, Next.js, Tailwind, HTML, CSS, and much more',
-    'project.softwareDev.description': 'Native development with Rust, C++, WinUI and Razor',
+    'project.softwareDev.description': 'Native, optimized development for targeted systems using Rust, C++, WinUI, Qt and Razor',
     'project.mobileDev.description':
-      'Rapid development with frameworks like Flutter, React Native and Kotlin',
+      'Efficient, targeted development with frameworks like Flutter, React Native and Kotlin',
     'project.videoEditing.description':
       'Professional video editing with Adobe Premiere Pro, After Effects and Blender — including YouTube content, Reels, stories and other social media formats',
     'project.design.description':
-      'Logos, banners, business cards and other graphic materials for businesses and individuals',
+      'Logos, banners, business cards and other graphic materials for both businesses and individuals',
     'project.posters.description':
       'Artistic posters and digital illustrations with strong visual identity',
     'project.modeling3d.description':
